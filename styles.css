@@ -137,7 +137,7 @@
             height: 100vh;
             display: flex;
             align-items: center;
-            padding-top: 80px;
+            padding-top: 90px;
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             position: relative;
             overflow: hidden;
@@ -576,7 +576,7 @@
                 text-align: center;
             }
             .hero-content {
-                margin: 0 auto;
+                margin: 150px auto 0 auto;
             }
             .about-content {
                 flex-direction: column;
