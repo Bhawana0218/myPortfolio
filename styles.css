@@ -165,18 +165,25 @@
             align-items: center;
            
         }
+        .button-container{
+            display: flex;
+            justify-content: center;
+            margin: 40px;
+           
+        }
         #project-button{
             margin: 40px;
-
             display: flex;
-           justify-content: start;
+           justify-content: center;
             align-items: center;
+             border-radius: 40px 40px;
         }
         #touch-button{
             margin: 40px;
             display: flex;
-           justify-content: end;
+           justify-content: center;
             align-items: center;
+             border-radius: 40px 40px;
         }
 
         .hero h1 {
@@ -310,7 +317,7 @@
        
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 2rem;
         }
 
@@ -333,6 +340,7 @@
 
         .project-img {
             height: 200px;
+            width: full;
             overflow: hidden;
         }
 

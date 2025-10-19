@@ -76,6 +76,7 @@ const hamburger = document.querySelector('.hamburger');
             });
         }, { threshold: 0.5 });
         observer.observe(experienceSection);
+       
         const heroText = document.querySelector('.hero p');
         if (heroText) {
             const originalText = heroText.textContent;
