@@ -12,6 +12,7 @@ const hamburger = document.querySelector('.hamburger');
             });
  });
 
+
        
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -66,7 +67,7 @@ const hamburger = document.querySelector('.hamburger');
 
        
         const experienceSection = document.getElementById('experience');
-        
+        if (experienceSection) {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -76,7 +77,7 @@ const hamburger = document.querySelector('.hamburger');
             });
         }, { threshold: 0.5 });
         observer.observe(experienceSection);
-       
+    }
         const heroText = document.querySelector('.hero p');
         if (heroText) {
             const originalText = heroText.textContent;
@@ -95,6 +96,7 @@ const hamburger = document.querySelector('.hamburger');
                 heroText.textContent = originalText;
             }
         }
+
         const header = document.querySelector('header');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 100) {
