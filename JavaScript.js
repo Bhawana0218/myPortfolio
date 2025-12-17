@@ -58,6 +58,7 @@ const hamburger = document.querySelector('.hamburger');
                 }
             });
         };
+       
 
         
         checkFade();
