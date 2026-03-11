@@ -57,7 +57,7 @@
                     <p>I'm a third-year Computer Science Engineering student at Birla Institute Of Applied Sciences , Bhimtal, India. My academic journey has equipped me with strong analytical skills and a deep understanding of engineering principles.</p>
                     <p>Throughout my studies, I've focused on developing practical solutions to real-world problems, particularly in the areas of Web Development. I believe that engineering has the power to create a better future for everyone.</p>
                     <h2 class="section-title" >Skills</h2>
-                    <div class="skill-bars" >
+                    <!-- <div class="skill-bars" >
                         <div class="skill">
                           
                                 <div class="skill-name">
@@ -125,7 +125,191 @@
                             </div>
                         </div>
                         
-                    </div>
+                    </div> -->
+
+                    <div class="skills-cards">
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript Logo" class="skill-logo">
+        <h3>JavaScript</h3>
+        <div class="progress-bar">
+            <div class="progress" style="width: 80%;"></div>
+        </div>
+        <span class="skill-percent">80%</span>
+    </div>
+
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS Logo" class="skill-logo">
+        <h3>CSS</h3>
+        <div class="progress-bar">
+            <div class="progress" style="width: 85%;"></div>
+        </div>
+        <span class="skill-percent">85%</span>
+    </div>
+
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML Logo" class="skill-logo">
+        <h3>HTML</h3>
+        <div class="progress-bar">
+            <div class="progress" style="width: 95%;"></div>
+        </div>
+        <span class="skill-percent">95%</span>
+    </div>
+
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React Logo" class="skill-logo">
+        <h3>React</h3>
+        <div class="progress-bar">
+            <div class="progress" style="width: 90%;"></div>
+        </div>
+        <span class="skill-percent">90%</span>
+    </div>
+
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js Logo" class="skill-logo">
+        <h3>Next.js</h3>
+        <div class="progress-bar"><div class="progress" style="width: 75%;"></div></div>
+        <span class="skill-percent">75%</span>
+    </div>
+
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript Logo" class="skill-logo">
+        <h3>TypeScript</h3>
+        <div class="progress-bar"><div class="progress" style="width: 78%;"></div></div>
+        <span class="skill-percent">78%</span>
+    </div>
+
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB Logo" class="skill-logo">
+        <h3>MongoDB</h3>
+        <div class="progress-bar"><div class="progress" style="width: 70%;"></div></div>
+        <span class="skill-percent">70%</span>
+    </div>
+
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js Logo" class="skill-logo">
+        <h3>Node.js</h3>
+        <div class="progress-bar"><div class="progress" style="width: 80%;"></div></div>
+        <span class="skill-percent">80%</span>
+    </div>
+
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python Logo" class="skill-logo">
+        <h3>Python</h3>
+        <div class="progress-bar">
+            <div class="progress" style="width: 52%;"></div>
+        </div>
+        <span class="skill-percent">52%</span>
+    </div>
+
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="TailwindCSS Logo" class="skill-logo">
+        <h3>TailwindCSS</h3>
+        <div class="progress-bar">
+            <div class="progress" style="width: 80%;"></div>
+        </div>
+        <span class="skill-percent">80%</span>
+    </div>
+
+    <div class="skill-card">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL Logo" class="skill-logo">
+        <h3>MySQL</h3>
+        <div class="progress-bar">
+            <div class="progress" style="width: 84%;"></div>
+        </div>
+        <span class="skill-percent">84%</span>
+    </div>
+</div>
+<style>
+:root {
+    --primary-color: #0b0c1a;
+    --secondary-color: #13132f;
+    --card-bg: #1a1a40cc;
+    --text-color: #e0e0ff;
+    --highlight-color: #8c54ff;
+    --accent-color: #00d0ff;
+    --border-color: #2e2e5e;
+}
+
+body {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Skills Cards Grid */
+.skills-cards {
+    display: grid;
+   grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Individual Skill Card */
+.skill-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    border-color: var(--highlight-color);
+}
+
+/* Skill Logo */
+.skill-logo {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+/* Skill Name */
+.skill-card h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--accent-color);
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.progress {
+    height: 100%;
+    background: var(--highlight-color);
+    border-radius: 8px;
+    transition: width 1s ease-in-out;
+}
+
+/* Skill Percentage */
+.skill-percent {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .skills-cards {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .skill-card h3 {
+        font-size: 0.9rem;
+    }
+}
+</style>
                 </div>
             </div>
         </div>
@@ -135,6 +319,22 @@
         <div class="container">
             <h2 class="section-title">My Certificates</h2>
         <div class="certificates-grid">
+
+            <div class="project-card fade-in">
+                    <div class="project-img">
+                        <img src="upDate279.jpeg" alt="Full Stack web development">
+                    </div>
+                    <div class="project-content">
+                        <h3>Web Developer - upDate</h3>
+                        <div class="project-tags">
+                            <span class="tag">Portview Project</span>
+                            <span class="tag">Restaurant Website</span>
+                            <span class="tag">Research Work</span>
+                            
+                        </div>
+                        <p>Developed 2–3 responsive websites and conducted research to enhance web solutions using modern web technologies.</p>
+                        </div>
+                    </div>
 
             <div class="project-card fade-in">
                     <div class="project-img">
@@ -228,6 +428,8 @@
                     <div class="project-img">
                         <img src="Visiona.png" alt="Web Development Internship">
                     </div>
+
+
                     <div class="project-content">
                         <h3>Web Development Internship-Vislona</h3>
                         <div class="project-tags">
@@ -291,7 +493,7 @@
                         </div>
                     </div>
 
-                <div class="project-card fade-in">
+                <!-- <div class="project-card fade-in">
                     <div class="project-img">
                         <img src="photo11.png" alt="Crowdfuncding Internship">
                     </div>
@@ -408,7 +610,7 @@
                         <p>The foundational knowledge needed to write and understand Python code, making it ideal for beginners interested in programming, automation, or data-related fields.</p>
                        
                     </div>
-                </div>
+                </div> -->
 
                 <div class="project-card fade-in">
                     <div class="project-img">
@@ -450,6 +652,27 @@
         <div class="container">
             <h2 class="section-title">My Projects</h2>
             <div class="projects-grid">
+
+                <div class="project-card fade-in">
+                    <div class="project-img">
+                        <img src="ai-portfolio.png" alt="QUAY-Restaurant Website">
+                    </div>
+                    <div class="project-content">
+                        <h3>Chatbot-AI Interface Portfolio</h3>
+                        <div class="project-tags">
+                            
+                             <span class="tag">React</span>
+                            <span class="tag">TailwindCSS</span>
+                            <span class="tag">Python</span>
+                            
+                        </div>
+                        <p>Built AI-powered chatbots for interactive user experiences, integrating NLP and research-driven solutions.</p>
+                        <div class="project-links">
+                            <a href="https://resume-chatbot-portfolio-f174.vercel.app/"><i>View Project</i></a>
+                         
+                        </div>
+                    </div>
+                </div>
 
                 <div class="project-card fade-in">
                     <div class="project-img">
