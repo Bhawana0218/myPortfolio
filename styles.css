@@ -458,90 +458,6 @@ img {
     pointer-events: none;
 }
 
-/* Panoramic Fan Cards Arc */
-.panoramic-fan-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 1400px;
-    height: 687px;
-    perspective: 1200px;
-    transform-style: preserve-3d;
-    pointer-events: none;
-    z-index: 2;
-    opacity: 0.45;
-    transition: opacity 0.5s ease;
-}
-
-.panoramic-hero-section:hover .panoramic-fan-container {
-    opacity: 0.85;
-}
-
-.fan-card {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 280px;
-    height: 360px;
-    margin-left: -140px;
-    margin-top: -180px;
-    transform-style: preserve-3d;
-    transition: transform 0.6s var(--ease-smooth);
-}
-
-.fan-card-frame {
-    width: 100%;
-    height: 100%;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    background: #0d1020;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    position: relative;
-}
-
-.fan-card-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.85);
-}
-
-.fan-card-tag {
-    position: absolute;
-    bottom: 8px;
-    left: 8px;
-    right: 8px;
-    background: rgba(6, 7, 12, 0.9);
-    border: 1px solid rgba(0, 208, 255, 0.3);
-    border-radius: var(--radius-sm);
-    padding: 0.25rem 0.5rem;
-    font-size: 0.7rem;
-    font-family: var(--font-mono);
-    color: var(--accent-cyan);
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.fan-card-tag.prominent-tag {
-    border-color: var(--accent-violet);
-    color: #ffffff;
-    background: rgba(140, 84, 255, 0.8);
-}
-
-/* Fan Angles */
-.fan-card-0 { transform: translateX(-611px) translateY(102px) rotateZ(-18deg) rotateY(25deg) scale(0.78); }
-.fan-card-1 { transform: translateX(-407px) translateY(51px) rotateZ(-12deg) rotateY(18deg) scale(0.86); }
-.fan-card-2 { transform: translateX(-204px) translateY(15px) rotateZ(-6deg) rotateY(10deg) scale(0.93); }
-.fan-card-3 { transform: translateX(0px) translateY(-13px) rotateZ(0deg) rotateY(0deg) scale(1); z-index: 10; }
-.fan-card-4 { transform: translateX(204px) translateY(15px) rotateZ(6deg) rotateY(-10deg) scale(0.93); }
-.fan-card-5 { transform: translateX(407px) translateY(51px) rotateZ(12deg) rotateY(-18deg) scale(0.86); }
-.fan-card-6 { transform: translateX(611px) translateY(102px) rotateZ(18deg) rotateY(-25deg) scale(0.78); }
-
 .hero-content-container {
     position: relative;
     z-index: 4;
@@ -2420,6 +2336,287 @@ body.cursor-hover-drag .cursor-badge {
 
 .mb-intro.mb-hidden { display: none; }
 
+.mb-intro {
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.mb-intro .macbook-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px;
+    height: 96px;
+    margin: 0;
+    perspective: 1000px;
+    transform: translate(-50%, -50%) scale(1.45);
+}
+
+.mb-intro .macbook-inner {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+}
+
+.mb-intro .macbook-screen,
+.mb-intro .macbook-body {
+    position: absolute;
+    inset: 0;
+    width: 150px;
+    height: 96px;
+    border-radius: 7px;
+    transform-style: preserve-3d;
+}
+
+.mb-intro .macbook-screen {
+    transform-origin: center bottom;
+}
+
+.mb-intro .macbook-screen-face-one,
+.mb-intro .macbook-body-face-one {
+    position: absolute;
+    inset: 0;
+    width: 150px;
+    height: 96px;
+    border-radius: 7px;
+    transform-style: preserve-3d;
+}
+
+.mb-intro .macbook-screen-face-one {
+    background: linear-gradient(145deg, #d9d9d9, #b7b7b7);
+    transform: translateZ(2px);
+}
+
+.mb-intro .macbook-screen-face-one > div:first-child {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    width: 3px;
+    height: 3px;
+    margin: 0;
+    border-radius: 50%;
+    background: #111;
+    transform: translateX(-50%);
+}
+
+.mb-intro .macbook-screen-face-one > div:nth-child(2) {
+    position: relative;
+    width: 130px;
+    height: 74px;
+    margin: 10px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: radial-gradient(ellipse at 50% 40%, #15243a 0%, #070b14 75%);
+    box-shadow: inset 0 0 8px #000;
+}
+
+.mb-intro .macbook-screen-face-one > div:nth-child(2)::before {
+    content: "Bhawana.dev";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #63e8ff;
+    font: 700 12px var(--font-heading);
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 12px rgba(0, 208, 255, 0.65);
+}
+
+.mb-intro .macbook-screen-face-one > div:nth-child(2) > .custom-animate-screen-shade {
+    position: absolute;
+    inset: 0;
+    width: 130px;
+    height: 74px;
+    margin: 0;
+    pointer-events: none;
+}
+
+.mb-intro .macbook-screen-face-one > span {
+    position: absolute;
+    bottom: 0;
+    left: 57px;
+    color: #666;
+    font-size: 6px;
+}
+
+.mb-intro .macbook-body {
+    background: linear-gradient(145deg, #c5c5c5, #8f929b);
+    transform-origin: center bottom;
+}
+
+.mb-intro .macbook-body-face-one {
+    overflow: hidden;
+    background: linear-gradient(145deg, #e0e0e0, #aaaeb8);
+    transform: translateZ(-2px);
+}
+
+.mb-intro .macbook-body-face-one > div:first-child {
+    position: absolute;
+    top: 8px;
+    left: 55px;
+    width: 40px;
+    height: 27px;
+    border-radius: 4px;
+    background: linear-gradient(145deg, #c8c8c8, #a6a6a6);
+    box-shadow: inset 0 0 3px #888;
+}
+
+.mb-intro .macbook-keyboard {
+    position: absolute;
+    top: 40px;
+    left: 7px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 2px;
+    width: 136px;
+    height: 50px;
+    padding: 2px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: linear-gradient(145deg, #c5c5c5, #a2a2a2);
+    box-shadow: inset 0 0 3px #777;
+}
+
+.mb-intro .macbook-key {
+    flex: 0 0 6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    background: #444;
+    box-shadow: 0 -2px 0 #222;
+    transform: translateZ(-2px);
+}
+
+.mb-intro .macbook-keyboard > .macbook-key:nth-child(59) {
+    flex-basis: 45px;
+    width: 45px;
+}
+
+.mb-intro .macbook-body > div:not(.macbook-body-face-one) {
+    position: absolute;
+    z-index: 1;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #333;
+}
+
+.mb-intro .macbook-body > div:nth-child(2) { top: 20px; left: 20px; }
+.mb-intro .macbook-body > div:nth-child(3) { top: 20px; right: 20px; }
+.mb-intro .macbook-body > div:nth-child(4) { right: 20px; bottom: 20px; }
+.mb-intro .macbook-body > div:nth-child(5) { bottom: 20px; left: 20px; }
+
+.mb-intro .macbook-shadow {
+    position: absolute;
+    top: 150px;
+    left: 45px;
+    width: 60px;
+    height: 0;
+    box-shadow: 0 0 60px 40px rgba(0, 0, 0, 0.45);
+}
+
+.mb-intro .mb-intro-footer {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--accent-cyan);
+    text-align: center;
+    font-family: var(--font-mono);
+}
+
+.mb-intro .mb-loading-dots span {
+    animation: mbDotBlink 1.4s ease-in-out infinite;
+}
+
+.mb-intro .mb-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.mb-intro .mb-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+.mb-intro .mb-skip-btn {
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    background: #1a1d2c;
+    color: #aab2c5;
+    cursor: pointer;
+}
+
+.mb-intro .mb-skip-btn:hover {
+    background: var(--accent-violet);
+    color: #fff;
+}
+
+.mb-intro .custom-animate-rotate {
+    animation: macbook-intro-rotate 5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.mb-intro .custom-animate-lid-screen {
+    animation: macbook-intro-lid 5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.mb-intro .custom-animate-lid-macbody {
+    animation: macbook-intro-body 5s ease-in-out both;
+}
+
+.mb-intro .custom-animate-lid-keyboard-area {
+    animation: macbook-intro-keyboard 5s ease-in-out both;
+}
+
+.mb-intro .custom-animate-screen-shade {
+    animation: macbook-intro-shade 5s ease-in-out both;
+}
+
+.mb-intro .custom-animate-keys {
+    animation: macbook-intro-keys 5s ease-in-out both;
+}
+
+.mb-intro .custom-animate-macbook-shadow {
+    animation: macbook-intro-shadow 5s ease-in-out both;
+}
+
+@keyframes macbook-intro-rotate {
+    0% { transform: rotateX(-18deg) rotateY(150deg) scale(0.65); opacity: 0; }
+    12% { transform: rotateX(-18deg) rotateY(90deg) scale(0.9); opacity: 1; }
+    38%, 78% { transform: rotateX(-18deg) rotateY(0deg) scale(1); opacity: 1; }
+    100% { transform: rotateX(-18deg) rotateY(0deg) scale(0.42); opacity: 0; }
+}
+
+@keyframes macbook-intro-lid {
+    0%, 12% { transform: rotateX(0deg); }
+    38%, 78% { transform: rotateX(-90deg); }
+    100% { transform: rotateX(-90deg) scale(0.8); }
+}
+
+@keyframes macbook-intro-body {
+    0%, 30%, 78% { transform: rotateX(0deg); }
+    100% { transform: rotateX(0deg) scale(0.8); }
+}
+
+@keyframes macbook-intro-keyboard {
+    0%, 100% { background-color: #c5c5c5; }
+    50% { background-color: #d9d9d9; }
+}
+
+@keyframes macbook-intro-shade {
+    0% { background-position: -150px 0; }
+    50% { background-position: 150px 0; }
+    100% { background-position: 300px 0; }
+}
+
+@keyframes macbook-intro-keys {
+    0%, 100% { box-shadow: 0 -2px 0 #222; }
+    50% { box-shadow: 0 1px 0 #222; }
+}
+
+@keyframes macbook-intro-shadow {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    38%, 78% { opacity: 1; transform: scale(1); }
+}
+
 .mb-scene {
     perspective: 800px;
     width: 280px;
@@ -2737,10 +2934,6 @@ body.cursor-hover-drag .cursor-badge {
     z-index: 1 !important;
 }
 
-.panoramic-fan-container {
-    z-index: 2 !important;
-}
-
 .hero-content-container {
     position: relative;
     z-index: 10 !important;
@@ -2946,6 +3139,167 @@ body.cursor-hover-drag .cursor-badge {
     opacity: 1;
 }
 
+.certificates-grid[hidden] {
+    display: none;
+}
+
+.cert-animated-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto 0;
+}
+
+.cert-card-stack {
+    width: 100%;
+}
+
+.cert-stack-stage {
+    position: relative;
+    width: min(100%, 600px);
+    height: 438px;
+    margin: 0 auto;
+}
+
+.cert-stack-card {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    width: min(100%, 520px);
+    height: 390px;
+    transform-origin: center bottom;
+    transition: bottom 480ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 480ms cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 480ms ease;
+}
+
+.cert-stack-card[data-stack-position="0"] {
+    z-index: 3;
+    transform: translateX(-50%) scale(1);
+}
+
+.cert-stack-card[data-stack-position="1"] {
+    z-index: 2;
+    bottom: 26px;
+    transform: translateX(-50%) scale(0.96);
+}
+
+.cert-stack-card[data-stack-position="2"] {
+    z-index: 1;
+    bottom: 40px;
+    transform: translateX(-50%) scale(0.92);
+}
+
+.cert-stack-card .cert-img-box {
+    height: 170px;
+}
+
+.cert-stack-card .cert-body {
+    padding: 1.1rem;
+}
+
+.cert-stack-card .cert-name {
+    font-size: 1.05rem;
+}
+
+.cert-stack-card .cert-detail {
+    font-size: 0.82rem;
+}
+
+.cert-stack-stage.is-advancing .cert-stack-card[data-stack-position="0"] {
+    z-index: 10;
+    opacity: 0;
+    transform: translate(-50%, 360px) scale(1);
+}
+
+.cert-stack-stage.is-advancing .cert-stack-card[data-stack-position="1"] {
+    z-index: 3;
+    bottom: 12px;
+    transform: translateX(-50%) scale(1);
+}
+
+.cert-stack-stage.is-advancing .cert-stack-card[data-stack-position="2"] {
+    z-index: 2;
+    bottom: 26px;
+    transform: translateX(-50%) scale(0.96);
+}
+
+.cert-stack-card--entering {
+    animation: cert-stack-enter 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cert-stack-enter {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -70px) scale(0.82);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scale(0.92);
+    }
+}
+
+.cert-stack-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 0.5rem;
+}
+
+.cert-stack-counter {
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+}
+
+.cert-stack-next {
+    min-height: 2.6rem;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--border-accent-cyan);
+    border-radius: var(--radius-sm);
+    background: rgba(0, 208, 255, 0.08);
+    color: var(--text-primary);
+    font: 600 0.88rem var(--font-body);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.cert-stack-next:hover:not(:disabled) {
+    background: rgba(0, 208, 255, 0.16);
+    transform: translateY(-2px);
+}
+
+.cert-stack-next:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+    .cert-stack-stage {
+        height: 420px;
+    }
+
+    .cert-stack-card {
+        width: 100%;
+        height: 380px;
+    }
+
+    .cert-stack-card .cert-img-box {
+        height: 150px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cert-stack-card,
+    .cert-stack-next {
+        transition-duration: 0.01ms;
+    }
+
+    .cert-stack-card--entering {
+        animation-duration: 0.01ms;
+    }
+}
+
 /* ==========================================================================
    RESPONSIVE LAYOUTS — FULLY MOBILE OPTIMIZED
    ========================================================================== */
@@ -2955,7 +3309,6 @@ body.cursor-hover-drag .cursor-badge {
     .hero-verified-bar { grid-template-columns: repeat(2, 1fr); }
     .contact-grid { grid-template-columns: 1fr; }
     .footer-content { grid-template-columns: 1fr; }
-    .panoramic-fan-container { display: none; }
     .skills-categories-grid { grid-template-columns: repeat(2, 1fr); }
     .arch-telemetry-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -3165,4 +3518,3 @@ body.cursor-hover-drag .cursor-badge {
         transform: none !important;
     }
 }
-

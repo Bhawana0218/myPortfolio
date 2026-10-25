@@ -1593,7 +1593,7 @@ if (isWebhookValid && req.body.event === 'payment.captured') {
                 });
             });
 
-            document.querySelectorAll('.works-wheel-stage, .panoramic-fan-container').forEach(el => {
+            document.querySelectorAll('.works-wheel-stage').forEach(el => {
                 el.addEventListener('mouseenter', () => {
                     document.body.classList.add('cursor-hover-drag');
                     if (badge) badge.textContent = 'DRAG 3D';
@@ -1633,7 +1633,7 @@ if (isWebhookValid && req.body.event === 'payment.captured') {
     // 15. DYNAMIC CARD SPOTLIGHT SHIMMER
     // =========================================================================
     function initCardSpotlight() {
-        const cards = document.querySelectorAll('.project-lab-card, .fan-card, .arch-deep-card, .exp-item-card, .skill-category-card, .cert-card');
+        const cards = document.querySelectorAll('.project-lab-card, .arch-deep-card, .exp-item-card, .skill-category-card, .cert-card');
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
@@ -1646,7 +1646,196 @@ if (isWebhookValid && req.body.event === 'payment.captured') {
     }
 
     // =========================================================================
-    // 16. LIVE TELEMETRY HUD & NAINITAL (IST) CLOCK
+    // 16. CERTIFICATION CARD FAN
+    // =========================================================================
+    function initCertificateFan() {
+        const stack = document.getElementById('certAnimatedCardStack');
+        const grid = document.querySelector('.certificates-grid');
+        if (!stack || !grid) return;
+
+        const sources = Array.from(grid.querySelectorAll('.cert-card'));
+        if (sources.length === 0) return;
+
+        const stage = document.createElement('div');
+        stage.className = 'cert-fan-stage';
+        stage.tabIndex = 0;
+        stage.setAttribute('role', 'region');
+        stage.setAttribute('aria-roledescription', 'carousel');
+        stage.setAttribute('aria-label', 'Certifications');
+
+        const controls = document.createElement('div');
+        controls.className = 'cert-fan-controls';
+
+        const counter = document.createElement('span');
+        counter.className = 'cert-fan-counter';
+        counter.setAttribute('aria-live', 'polite');
+
+        const dots = document.createElement('div');
+        dots.className = 'cert-fan-dots';
+        dots.setAttribute('role', 'group');
+        dots.setAttribute('aria-label', 'Choose a certificate');
+
+        function createControl(className, label, text) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = className;
+            button.setAttribute('aria-label', label);
+            button.textContent = text;
+            return button;
+        }
+
+        const previousButton = createControl('cert-fan-arrow', 'Previous certificate', '←');
+        const nextButton = createControl('cert-fan-arrow', 'Next certificate', '→');
+        const items = sources.map((source, index) => {
+            const image = source.querySelector('.cert-img-box img');
+            return {
+                title: source.querySelector('.cert-name')?.textContent?.trim() || `Certificate ${index + 1}`,
+                description: source.querySelector('.cert-detail')?.textContent?.trim() || '',
+                organization: source.querySelector('.cert-org')?.textContent?.trim() || '',
+                imageSrc: image?.getAttribute('src') || '',
+                imageAlt: image?.getAttribute('alt') || '',
+            };
+        });
+
+        const cards = items.map((item, index) => {
+            const card = document.createElement('button');
+            card.type = 'button';
+            card.className = 'cert-fan-card';
+            card.setAttribute('aria-label', `Show certificate: ${item.title}`);
+            card.addEventListener('click', () => setActive(index));
+
+            const image = document.createElement('img');
+            image.src = item.imageSrc;
+            image.alt = item.imageAlt;
+            image.draggable = false;
+            image.loading = 'lazy';
+
+            const overlay = document.createElement('span');
+            overlay.className = 'cert-fan-overlay';
+            overlay.setAttribute('aria-hidden', 'true');
+
+            const content = document.createElement('span');
+            content.className = 'cert-fan-content';
+
+            const organization = document.createElement('span');
+            organization.className = 'cert-fan-organization';
+            organization.textContent = item.organization;
+
+            const title = document.createElement('span');
+            title.className = 'cert-fan-title';
+            title.textContent = item.title;
+
+            const description = document.createElement('span');
+            description.className = 'cert-fan-description';
+            description.textContent = item.description;
+
+            content.append(organization, title, description);
+            card.append(image, overlay, content);
+            stage.append(card);
+            return card;
+        });
+
+        const dotButtons = items.map((item, index) => {
+            const dot = createControl('cert-fan-dot', `Show certificate ${index + 1}: ${item.title}`, '');
+            dot.addEventListener('click', () => setActive(index));
+            dots.append(dot);
+            return dot;
+        });
+
+        controls.append(previousButton, counter, dots, nextButton);
+        stack.replaceChildren(stage, controls);
+
+        const maxVisible = Math.min(5, items.length);
+        const maxOffset = Math.floor(maxVisible / 2);
+        const spreadDeg = 48;
+        const depthPx = 110;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let activeIndex = 0;
+        let isPaused = false;
+
+        function getOffset(index) {
+            const raw = index - activeIndex;
+            if (items.length <= 1) return raw;
+            if (raw > items.length / 2) return raw - items.length;
+            if (raw < -items.length / 2) return raw + items.length;
+            return raw;
+        }
+
+        function updateCards() {
+            const stageWidth = stage.clientWidth || window.innerWidth;
+            const cardWidth = stageWidth < 600
+                ? Math.max(260, stageWidth * 0.78)
+                : Math.min(470, stageWidth * 0.42);
+            const cardHeight = stageWidth < 600 ? 270 : 360;
+            const spacing = cardWidth * 0.36;
+            const stepDeg = maxOffset ? spreadDeg / maxOffset : 0;
+
+            cards.forEach((card, index) => {
+                const offset = getOffset(index);
+                const distance = Math.abs(offset);
+                const visible = distance <= maxOffset;
+                const active = index === activeIndex;
+                const x = offset * spacing;
+                const y = distance * 10;
+                const z = -distance * depthPx;
+
+                card.style.width = `${cardWidth}px`;
+                card.style.height = `${cardHeight}px`;
+                card.style.zIndex = String(100 - distance);
+                card.style.opacity = visible ? '1' : '0';
+                card.style.pointerEvents = visible ? 'auto' : 'none';
+                card.style.transform = `translate3d(calc(-50% + ${x}px), ${y}px, ${z}px) rotateX(${active ? 0 : 12}deg) rotateZ(${offset * stepDeg}deg) scale(${active ? 1.03 : 0.94})`;
+                card.setAttribute('aria-hidden', String(!visible));
+                card.setAttribute('aria-pressed', String(active));
+                card.tabIndex = active ? 0 : -1;
+            });
+
+            dotButtons.forEach((dot, index) => {
+                const active = index === activeIndex;
+                dot.classList.toggle('active', active);
+                dot.setAttribute('aria-current', String(active));
+            });
+            counter.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+        }
+
+        function setActive(index) {
+            activeIndex = ((index % items.length) + items.length) % items.length;
+            updateCards();
+        }
+
+        previousButton.addEventListener('click', () => setActive(activeIndex - 1));
+        nextButton.addEventListener('click', () => setActive(activeIndex + 1));
+        stage.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                setActive(activeIndex - 1);
+            } else if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                setActive(activeIndex + 1);
+            }
+        });
+
+        stack.addEventListener('mouseenter', () => { isPaused = true; });
+        stack.addEventListener('mouseleave', () => { isPaused = false; });
+        stack.addEventListener('focusin', () => { isPaused = true; });
+        stack.addEventListener('focusout', (event) => {
+            if (!stack.contains(event.relatedTarget)) isPaused = false;
+        });
+        window.addEventListener('resize', updateCards);
+
+        if (!reduceMotion) {
+            window.setInterval(() => {
+                if (!isPaused && !document.hidden) setActive(activeIndex + 1);
+            }, 3200);
+        }
+
+        updateCards();
+        stack.classList.add('is-enhanced');
+        grid.hidden = true;
+    }
+
+    // =========================================================================
+    // 17. LIVE TELEMETRY HUD & NAINITAL (IST) CLOCK
     // =========================================================================
     function initLiveTelemetryHUD() {
         const clockEl = document.getElementById('hudClock');
@@ -1768,6 +1957,7 @@ if (isWebhookValid && req.body.event === 'payment.captured') {
         initMobileMenuAndYear();
         initWebAudioSynthesizer();
         initCustomInertiaCursor();
+        initCertificateFan();
         initCardSpotlight();
         initLiveTelemetryHUD();
         initArchitectureTelemetryModal();

@@ -161,24 +161,33 @@
       document.addEventListener('DOMContentLoaded', function() {
         const mbIntro = document.getElementById('mbIntro');
         const skipBtn = document.getElementById('mbSkipBtn');
+        if (!mbIntro) return;
 
-        function hideIntro() {
-          if (mbIntro) {
-            mbIntro.classList.add('mb-intro-zoom-out');
-            setTimeout(function() {
-              mbIntro.style.display = 'none';
-              // Reveal portfolio content
-              document.body.style.overflow = 'auto';
-            }, 1000);
-          }
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          mbIntro.classList.add('mb-hidden');
+          return;
         }
 
-        // Auto hide after 5 seconds (animation duration)
-        setTimeout(hideIntro, 5000);
+        document.body.style.overflow = 'hidden';
+        let isClosing = false;
 
-        // Skip button
+        function hideIntro() {
+          if (isClosing) return;
+          isClosing = true;
+          mbIntro.classList.add('mb-intro-zoom-out');
+          window.setTimeout(function() {
+            mbIntro.classList.add('mb-hidden');
+            document.body.style.overflow = '';
+          }, 1000);
+        }
+
+        const introTimer = window.setTimeout(hideIntro, 5000);
+
         if (skipBtn) {
-          skipBtn.addEventListener('click', hideIntro);
+          skipBtn.addEventListener('click', function() {
+            window.clearTimeout(introTimer);
+            hideIntro();
+          });
         }
       });
     </script>
@@ -277,52 +286,6 @@
             <div class="hero-canvas-wrapper" id="heroCanvasContainer" aria-hidden="true">
                 <canvas id="heroCanvas"></canvas>
                 <div class="hero-ambient-glow"></div>
-            </div>
-
-            <!-- Panoramic 3D Fan Arc of Real Project Cards -->
-            <div class="panoramic-fan-container" id="panoramicFan" aria-hidden="true">
-                <div class="fan-card fan-card-0" data-tilt-factor="-3.5">
-                    <div class="fan-card-frame">
-                        <img src="skillsphere.png" alt="SkillSphere Project" loading="eager">
-                        <span class="fan-card-tag">SkillSphere &bull; Freelance AI</span>
-                    </div>
-                </div>
-                <div class="fan-card fan-card-1" data-tilt-factor="-2">
-                    <div class="fan-card-frame">
-                        <img src="stacklens.png" alt="StackLens Project" loading="eager">
-                        <span class="fan-card-tag">StackLens &bull; SaaS Spend</span>
-                    </div>
-                </div>
-                <div class="fan-card fan-card-2" data-tilt-factor="-0.8">
-                    <div class="fan-card-frame">
-                        <img src="NatureMind.png" alt="NatureMind Project" loading="eager">
-                        <span class="fan-card-tag">NatureMind &bull; Groq Llama-3</span>
-                    </div>
-                </div>
-                <div class="fan-card fan-card-3 center-card" data-tilt-factor="0">
-                    <div class="fan-card-frame">
-                        <img src="skillsphere.png" alt="AI ERP Suite Project" loading="eager">
-                        <span class="fan-card-tag prominent-tag">AI Cloud ERP Suite</span>
-                    </div>
-                </div>
-                <div class="fan-card fan-card-4" data-tilt-factor="0.8">
-                    <div class="fan-card-frame">
-                        <img src="Eco-Cart.png" alt="EcoSage AI Project" loading="eager">
-                        <span class="fan-card-tag">EcoSage AI &bull; Impact</span>
-                    </div>
-                </div>
-                <div class="fan-card fan-card-5" data-tilt-factor="2">
-                    <div class="fan-card-frame">
-                        <img src="Monex.png" alt="Monex Project" loading="eager">
-                        <span class="fan-card-tag">Monex &bull; Fintech</span>
-                    </div>
-                </div>
-                <div class="fan-card fan-card-6" data-tilt-factor="3.5">
-                    <div class="fan-card-frame">
-                        <img src="Quay.png" alt="QUAY Project" loading="eager">
-                        <span class="fan-card-tag">QUAY &bull; Marketplace</span>
-                    </div>
-                </div>
             </div>
 
             <!-- Editorial Hero Content -->
