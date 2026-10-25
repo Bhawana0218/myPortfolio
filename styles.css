@@ -2438,18 +2438,11 @@ body.cursor-hover-drag .cursor-badge {
 }
 
 @keyframes mbRotate {
-    0%   { transform: rotateX(-20deg) rotateY(0deg); }
-    5%   { transform: rotateX(-20deg) rotateY(-20deg); }
-    20%  { transform: rotateX(30deg)  rotateY(200deg); }
-    25%  { transform: rotateX(-60deg) rotateY(150deg); }
-    60%  { transform: rotateX(-20deg) rotateY(130deg); }
-    65%  { transform: rotateX(-20deg) rotateY(120deg); }
-    80%  { transform: rotateX(-20deg) rotateY(375deg); }
-    87%  { transform: rotateX(-20deg) rotateY(360deg); }
-    100% { transform: rotateX(-20deg) rotateY(360deg); }
+    0%   { transform: rotateX(0deg) rotateY(0deg) scale(1); opacity: 1; }
+    100% { transform: rotateX(0deg) rotateY(0deg) scale(0.8); opacity: 0; }
 }
 
-/* MacBook Lid / Screen */
+/* MacBook Lid / Screen - starts facing AWAY (closed), then opens toward user */
 .mb-lid {
     position: absolute;
     width: 280px;
@@ -2457,18 +2450,42 @@ body.cursor-hover-drag .cursor-badge {
     bottom: 0; left: 0;
     transform-style: preserve-3d;
     transform-origin: bottom center;
-    animation: mbLidScreen 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: mbLidScreen 5s ease-in-out forwards;
 }
 
 @keyframes mbLidScreen {
-    0%   { transform: rotateX(0deg); }
-    5%   { transform: rotateX(50deg); }
-    20%  { transform: rotateX(-90deg); }
-    25%  { transform: rotateX(15deg); }
-    30%  { transform: rotateX(-5deg); }
-    38%  { transform: rotateX(5deg); }
-    48%  { transform: rotateX(0deg); }
-    100% { transform: rotateX(0deg); }
+    0%   { transform: rotateX(0deg); }           /* Closed - back facing user */
+    20%  { transform: rotateX(60deg); }           /* Opening */
+    40%  { transform: rotateX(-120deg); }         /* Open - screen facing user */
+    80%  { transform: rotateX(-120deg); }         /* Hold open facing user */
+    100% { transform: rotateX(-120deg) scale(0.7); opacity: 0; } /* Zoom out & fade */
+}
+
+/* Hide screen content when facing away (backside) */
+.mb-screen-ui,
+.mb-sc-logo,
+.mb-sc-subtitle,
+.mb-sc-dots,
+.mb-sc-bars {
+    backface-visibility: hidden;
+    animation: screenContent 5s ease-in-out forwards;
+}
+
+@keyframes screenContent {
+    0%   { opacity: 0; transform: rotateY(180deg); }   /* Hidden on backside */
+    40%  { opacity: 1; transform: rotateY(0deg); }     /* Visible when facing user */
+    80%  { opacity: 1; }
+    100% { opacity: 0; }                               /* Fade out on zoom */
+}
+
+/* Zoom out the whole macbook intro container */
+@keyframes mbIntroZoomOut {
+    0%   { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.5); opacity: 0; }
+}
+
+.mb-intro-zoom-out {
+    animation: mbIntroZoomOut 1s ease-in forwards;
 }
 
 .mb-lid-face {
