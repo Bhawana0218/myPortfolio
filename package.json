@@ -1,0 +1,31 @@
+{
+  "name": "bhawana-portfolio",
+  "version": "2.0.0",
+  "description": "Bhawana Bisht - AI Application Developer & Full-Stack Engineer Portfolio",
+  "private": true,
+  "scripts": {
+    "start": "python -m http.server 3000"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.1",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "gsap": "^3.12.5",
+    "lucide-react": "^0.475.0",
+    "motion": "^12.4.2",
+    "next-themes": "^0.4.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icon-cloud": "^4.1.4",
+    "tailwind-merge": "^2.6.0",
+    "three": "^0.164.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.10",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.164.1",
+    "typescript": "^5.7.3"
+  }
+}
