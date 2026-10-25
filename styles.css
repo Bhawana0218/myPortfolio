@@ -466,7 +466,7 @@ img {
     transform: translate(-50%, -50%);
     width: 100%;
     max-width: 1400px;
-    height: 540px;
+    height: 687px;
     perspective: 1200px;
     transform-style: preserve-3d;
     pointer-events: none;
@@ -483,10 +483,10 @@ img {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 220px;
-    height: 290px;
-    margin-left: -110px;
-    margin-top: -145px;
+    width: 280px;
+    height: 360px;
+    margin-left: -140px;
+    margin-top: -180px;
     transform-style: preserve-3d;
     transition: transform 0.6s var(--ease-smooth);
 }
@@ -534,13 +534,13 @@ img {
 }
 
 /* Fan Angles */
-.fan-card-0 { transform: translateX(-480px) translateY(80px) rotateZ(-18deg) rotateY(25deg) scale(0.78); }
-.fan-card-1 { transform: translateX(-320px) translateY(40px) rotateZ(-12deg) rotateY(18deg) scale(0.86); }
-.fan-card-2 { transform: translateX(-160px) translateY(12px) rotateZ(-6deg) rotateY(10deg) scale(0.93); }
-.fan-card-3 { transform: translateX(0px) translateY(-10px) rotateZ(0deg) rotateY(0deg) scale(1); z-index: 10; }
-.fan-card-4 { transform: translateX(160px) translateY(12px) rotateZ(6deg) rotateY(-10deg) scale(0.93); }
-.fan-card-5 { transform: translateX(320px) translateY(40px) rotateZ(12deg) rotateY(-18deg) scale(0.86); }
-.fan-card-6 { transform: translateX(480px) translateY(80px) rotateZ(18deg) rotateY(-25deg) scale(0.78); }
+.fan-card-0 { transform: translateX(-611px) translateY(102px) rotateZ(-18deg) rotateY(25deg) scale(0.78); }
+.fan-card-1 { transform: translateX(-407px) translateY(51px) rotateZ(-12deg) rotateY(18deg) scale(0.86); }
+.fan-card-2 { transform: translateX(-204px) translateY(15px) rotateZ(-6deg) rotateY(10deg) scale(0.93); }
+.fan-card-3 { transform: translateX(0px) translateY(-13px) rotateZ(0deg) rotateY(0deg) scale(1); z-index: 10; }
+.fan-card-4 { transform: translateX(204px) translateY(15px) rotateZ(6deg) rotateY(-10deg) scale(0.93); }
+.fan-card-5 { transform: translateX(407px) translateY(51px) rotateZ(12deg) rotateY(-18deg) scale(0.86); }
+.fan-card-6 { transform: translateX(611px) translateY(102px) rotateZ(18deg) rotateY(-25deg) scale(0.78); }
 
 .hero-content-container {
     position: relative;
