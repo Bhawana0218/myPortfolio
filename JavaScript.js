@@ -14,6 +14,15 @@
     'use strict';
 
     // =========================================================================
+    // 0. UTILITY FUNCTIONS
+    // =========================================================================
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.appendChild(document.createTextNode(str));
+        return div.innerHTML;
+    }
+
+    // =========================================================================
     // 1. VERIFIED PROJECTS REPOSITORY (Source of Truth: Resume 2026)
     // =========================================================================
     const FEATURED_WHEEL_PROJECTS = [
@@ -438,6 +447,9 @@
         const inspectBtn = document.getElementById('wheelInspectBtn');
         const liveLink = document.getElementById('wheelLiveLink');
         const indexList = document.getElementById('wheelIndexList');
+        const prevBtn = document.getElementById('wheelPrevBtn');
+        const nextBtn = document.getElementById('wheelNextBtn');
+        const progressBar = document.getElementById('wheelProgressBar');
 
         if (!stage || !drum) return;
 
@@ -464,6 +476,8 @@
         let activeIndex = 0;
         let dragStartY = null;
         let cardElements = [];
+        let isUserInteracting = false;
+        let lastInteractionTime = Date.now();
 
         function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
         function lerp(a, b, t) { return a + (b - a) * t; }
@@ -503,6 +517,8 @@
                 btn.addEventListener('click', () => {
                     const idx = parseInt(btn.getAttribute('data-target-index'), 10);
                     target = idx + 1;
+                    lastInteractionTime = Date.now();
+                    playSound('drum');
                 });
             });
         }
@@ -537,6 +553,10 @@
                     else btn.classList.remove('active');
                 });
             }
+
+            if (progressBar) {
+                progressBar.style.width = `${((idx + 1) / count) * 100}%`;
+            }
         }
 
         function calculateMetrics() {
@@ -561,6 +581,12 @@
 
         // Animation Loop for 3D drum transforms
         function stepAnimation() {
+            // Subtle luxury idle auto-drift after 4 seconds of inactivity
+            if (!isUserInteracting && Date.now() - lastInteractionTime > 4000) {
+                target += 0.0015;
+                if (target > last + 1.2) target = 1;
+            }
+
             const metrics = calculateMetrics();
             stage.style.perspective = `${metrics.depth}px`;
 
@@ -598,6 +624,7 @@
             if (nearIndex !== activeIndex) {
                 activeIndex = nearIndex;
                 updateActiveDetails(activeIndex);
+                playSound('drum');
             }
 
             requestAnimationFrame(stepAnimation);
@@ -605,6 +632,7 @@
 
         // Scroll wheel event
         stage.addEventListener('wheel', (e) => {
+            lastInteractionTime = Date.now();
             const next = target + e.deltaY / WHEEL_UNITS;
             if (next > 0 && next < last + 1) {
                 e.preventDefault();
@@ -614,30 +642,57 @@
 
         // Pointer drag event
         stage.addEventListener('pointerdown', (e) => {
+            isUserInteracting = true;
+            lastInteractionTime = Date.now();
             dragStartY = e.clientY;
             stage.setPointerCapture(e.pointerId);
         });
 
         stage.addEventListener('pointermove', (e) => {
             if (dragStartY === null) return;
+            lastInteractionTime = Date.now();
             const delta = dragStartY - e.clientY;
             target = clamp(target + delta / DRAG_UNITS, 0, last + 1);
             dragStartY = e.clientY;
         });
 
         stage.addEventListener('pointerup', () => {
+            isUserInteracting = false;
+            lastInteractionTime = Date.now();
             dragStartY = null;
             if (target > 1) target = Math.round(target);
         });
 
-        // Keyboard arrow keys
+        stage.addEventListener('mouseenter', () => { isUserInteracting = true; });
+        stage.addEventListener('mouseleave', () => { isUserInteracting = false; lastInteractionTime = Date.now(); });
+
+        // Prev & Next Buttons
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                lastInteractionTime = Date.now();
+                target = clamp(Math.round(target) - 1, 1, last + 1);
+                playSound('drum');
+            });
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                lastInteractionTime = Date.now();
+                target = clamp(Math.round(target) + 1, 1, last + 1);
+                playSound('drum');
+            });
+        }
+
+        // Keyboard navigation
         stage.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown') {
+            lastInteractionTime = Date.now();
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
                 e.preventDefault();
                 target = clamp(Math.round(target) + 1, 0, last + 1);
-            } else if (e.key === 'ArrowUp') {
+                playSound('drum');
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
                 e.preventDefault();
                 target = clamp(Math.round(target) - 1, 0, last + 1);
+                playSound('drum');
             }
         });
 
@@ -779,17 +834,47 @@
     }
 
     // =========================================================================
-    // 6. PROJECTS LABORATORY GRID & 3D TILT CARDS
+    // 6. PROJECTS LABORATORY GRID & 3D TILT CARDS WITH INSTANT SEARCH
     // =========================================================================
     function initProjectsLaboratory() {
         const grid = document.getElementById('projectsGrid');
         const filterTabs = document.querySelectorAll('.filter-tab');
+        const searchInput = document.getElementById('projectSearchInput');
+        const clearBtn = document.getElementById('clearSearchBtn');
+        const statsBadge = document.getElementById('searchStatsBadge');
+
         if (!grid) return;
 
-        function renderGrid(filter = 'all') {
-            const filtered = filter === 'all'
-                ? ALL_PROJECTS
-                : ALL_PROJECTS.filter(p => p.category === filter);
+        let activeCategory = 'all';
+        let searchQuery = '';
+
+        function renderGrid() {
+            let filtered = ALL_PROJECTS;
+
+            if (activeCategory !== 'all') {
+                filtered = filtered.filter(p => p.category === activeCategory);
+            }
+
+            if (searchQuery) {
+                filtered = filtered.filter(p => {
+                    const haystack = `${p.title} ${p.summary} ${p.tags.join(' ')} ${p.categoryLabel}`.toLowerCase();
+                    return haystack.includes(searchQuery);
+                });
+            }
+
+            if (statsBadge) {
+                statsBadge.textContent = `${filtered.length} of ${ALL_PROJECTS.length} Projects`;
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: rgba(14, 18, 34, 0.4); border: 1px dashed var(--border-subtle); border-radius: var(--radius-lg);">
+                        <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 0.5rem;">No projects found matching "${escapeHtml(searchQuery)}".</p>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Try searching for <strong>Next.js</strong>, <strong>NestJS</strong>, <strong>FastAPI</strong>, <strong>Redis</strong>, or <strong>React</strong>.</p>
+                    </div>
+                `;
+                return;
+            }
 
             grid.innerHTML = filtered.map(p => `
                 <article class="project-lab-card" data-project-id="${p.id}" tabindex="0" role="button" aria-label="Open case study for ${p.title}">
@@ -826,6 +911,8 @@
                     const rx = ((y - cy) / cy) * -6;
                     const ry = ((x - cx) / cx) * 6;
                     card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
                 });
 
                 card.addEventListener('mouseleave', () => {
@@ -849,11 +936,32 @@
             tab.addEventListener('click', () => {
                 filterTabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                renderGrid(tab.getAttribute('data-filter'));
+                activeCategory = tab.getAttribute('data-filter') || 'all';
+                renderGrid();
+                playSound('click');
             });
         });
 
-        renderGrid('all');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.trim().toLowerCase();
+                if (clearBtn) clearBtn.hidden = !searchQuery;
+                renderGrid();
+            });
+        }
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchQuery = '';
+                clearBtn.hidden = true;
+                renderGrid();
+                searchInput.focus();
+                playSound('click');
+            });
+        }
+
+        renderGrid();
     }
 
     // =========================================================================
@@ -1150,7 +1258,503 @@
     }
 
     // =========================================================================
-    // 12. BOOTSTRAP ALL ENGINES ON DOM READY
+    // 12. ARCHITECTURAL DEEP TELEMETRY SPECIFICATIONS
+    // =========================================================================
+    const ARCH_TELEMETRY = {
+        'client-nextjs': {
+            title: 'Next.js 16 + React 19 Client Tier',
+            category: 'Client Layer & Edge UI',
+            specs: [
+                { label: 'Bundle Execution', val: '< 65kb' },
+                { label: 'Rendering Mode', val: 'SSR + Streaming' },
+                { label: 'State Model', val: 'Zustand + Server Actions' }
+            ],
+            code: `// Turborepo package boundary
+export default async function DashboardPage({ params }: { params: { tenantId: string } }) {
+  const session = await getTenantSession(params.tenantId);
+  const demandStream = api.forecasting.streamDemand(params.tenantId);
+  return (
+    <Suspense fallback={<TelemetrySkeleton />}>
+      <DemandPredictionChart stream={demandStream} rbacRole={session.role} />
+    </Suspense>
+  );
+}`,
+            rationale: 'Next.js 16 App Router provides streaming component hydration and parallel routes, isolating multi-tenant subdomains while executing fast server actions directly to the NestJS Gateway.'
+        },
+        'gateway-nestjs': {
+            title: 'NestJS 11 Modular API Gateway',
+            category: 'API Gateway & Distributed Auth',
+            specs: [
+                { label: 'Response Latency', val: '8.4ms p99' },
+                { label: 'Auth Strategy', val: 'JWT Rotation' },
+                { label: 'Blacklist Check', val: '< 0.6ms' }
+            ],
+            code: `@Injectable()
+export class JwtBlacklistGuard implements CanActivate {
+  constructor(private readonly redis: RedisService) {}
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const token = extractBearerToken(context.switchToHttp().getRequest());
+    const isRevoked = await this.redis.get(\`bl:\${token.jti}\`);
+    if (isRevoked) throw new UnauthorizedException('Token revoked');
+    return true;
+  }
+}`,
+            rationale: 'Enforces strict tenant scoping, RBAC guards, and token blacklisting using Redis 7 to guarantee immediate session termination across all active browser tabs upon logout or privilege changes.'
+        },
+        'db-postgres': {
+            title: 'Prisma 7 + PostgreSQL 17 Cluster',
+            category: 'Transactional Persistence',
+            specs: [
+                { label: 'Index Coverage', val: '100% foreign keys' },
+                { label: 'Tenant Isolation', val: 'Row-Level + Org ID' },
+                { label: 'Soft Deletion', val: 'Audited Timestamps' }
+            ],
+            code: `model TenantOrganization {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  createdAt   DateTime @default(now())
+  deletedAt   DateTime? // Soft-delete auditing
+  users       User[]
+  inventories InventoryItem[]
+  @@index([slug, deletedAt])
+}`,
+            rationale: 'PostgreSQL 17 handles concurrent enterprise transactions with B-Tree compound indices and soft-deletion middleware to preserve comprehensive fiscal audit trails.'
+        },
+        'ml-prophet': {
+            title: 'FastAPI + Meta Prophet Demand Predictor',
+            category: 'Predictive Machine Learning Microservice',
+            specs: [
+                { label: 'Inference Time', val: '180ms uncached' },
+                { label: 'Redis Cache Hit', val: '< 1.2ms' },
+                { label: 'Confidence Band', val: '95% Bayesian' }
+            ],
+            code: `@app.post("/api/v1/forecast")
+async def generate_demand_forecast(req: ForecastRequest, redis: Redis = Depends(get_redis)):
+    cache_key = f"fc:{req.tenant_id}:{req.sku}"
+    if cached := await redis.get(cache_key):
+        return json.loads(cached)
+    m = Prophet(yearly_seasonality=True, weekly_seasonality=True)
+    m.fit(req.historical_dataframe)
+    future = m.make_future_dataframe(periods=req.forecast_days)
+    forecast = m.predict(future)
+    await redis.setex(cache_key, 3600, forecast.to_json())
+    return forecast`,
+            rationale: 'FastAPI microservice executing Meta Prophet time-series models for stock replenishment, caching inferences in Redis 7 to ensure sub-2ms response times during executive dashboard queries.'
+        },
+        'devops-docker': {
+            title: 'Docker Compose + Trivy Vulnerability CI/CD',
+            category: 'Container Security & Orchestration',
+            specs: [
+                { label: 'Image Scan', val: '0 Critical CVEs' },
+                { label: 'Build Cache', val: 'Turborepo Remote' },
+                { label: 'Deploy Target', val: 'Containerized Microservices' }
+            ],
+            code: `name: Production CI/CD
+on: [push]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan Docker Image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'bhawana/erp-backend:latest'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'`,
+            rationale: 'Automated GitHub Actions pipeline performing static linting, unit tests, and Trivy container vulnerability scans prior to deployment, enforcing enterprise-grade zero-trust delivery.'
+        },
+        'auth-rbac': {
+            title: 'Multi-Role Authentication & Escrow Security',
+            category: 'Identity & Access Management',
+            specs: [
+                { label: 'OAuth Protocols', val: 'Google + 2FA' },
+                { label: 'Roles', val: 'Admin, Client, Freelancer' },
+                { label: 'Session Safety', val: 'HttpOnly Secure Cookies' }
+            ],
+            code: `// Role-based access validation
+export const verifyEscrowAuthority = (req, res, next) => {
+  if (req.user.role !== 'ADMIN' && req.user.id !== req.escrow.clientId) {
+    return res.status(403).json({ error: 'Unauthorized milestone release' });
+  }
+  next();
+};`,
+            rationale: 'Guarantees that escrow fund movements and dispute arbitrations can only be initiated by authenticated clients or platform administrators.'
+        },
+        'ai-embeddings': {
+            title: 'Hugging Face Semantic Skill Matching',
+            category: 'Vector Embeddings & NLP',
+            specs: [
+                { label: 'Embedding Model', val: 'all-MiniLM-L6-v2' },
+                { label: 'Vector Cosine Sim', val: '> 0.82 threshold' },
+                { label: 'Latency', val: '140ms inference' }
+            ],
+            code: `// Vector semantic similarity matching
+const calculateSkillCosine = async (jobRequirement, freelancerBio) => {
+  const reqVec = await hf.featureExtraction({ model: 'sentence-transformers/all-MiniLM-L6-v2', inputs: jobRequirement });
+  const bioVec = await hf.featureExtraction({ model: 'sentence-transformers/all-MiniLM-L6-v2', inputs: freelancerBio });
+  return cosineSimilarity(reqVec, bioVec);
+};`,
+            rationale: 'Replaces keyword searches with semantic vector embeddings to match freelancers with project specifications according to verified capabilities.'
+        },
+        'socket-redis': {
+            title: 'Socket.IO Duplex Collaboration Engine',
+            category: 'Real-Time Messaging & Presence',
+            specs: [
+                { label: 'Duplex Transport', val: 'WebSocket / WSS' },
+                { label: 'Pub/Sub Adapter', val: 'Redis Streams' },
+                { label: 'Delivery Uptime', val: '99.98%' }
+            ],
+            code: `io.adapter(createAdapter(redisClient, redisSubClient));
+io.on('connection', (socket) => {
+  socket.on('join_milestone_room', ({ milestoneId }) => {
+    socket.join(\`milestone:\${milestoneId}\`);
+  });
+  socket.on('file_revision_push', (data) => {
+    io.to(\`milestone:\${data.milestoneId}\`).emit('revision_received', data);
+  });
+});`,
+            rationale: 'Provides instant real-time message exchange and milestone status notifications synchronized across horizontally scaled instances using Redis Pub/Sub.'
+        },
+        'razorpay-escrow': {
+            title: 'Milestone Escrow Payment State Machine',
+            category: 'Fintech Transaction Safety',
+            specs: [
+                { label: 'Gateways', val: 'Razorpay + Stripe' },
+                { label: 'Verification', val: 'Cryptographic Webhook HMAC' },
+                { label: 'Dispute Handling', val: 'Automated 14-day hold' }
+            ],
+            code: `// Secure webhook listener verifying HMAC signature
+const isWebhookValid = crypto.createHmac('sha256', process.env.RAZORPAY_WEBHOOK_SECRET)
+  .update(JSON.stringify(req.body))
+  .digest('hex') === req.headers['x-razorpay-signature'];
+
+if (isWebhookValid && req.body.event === 'payment.captured') {
+  await escrowService.holdFundsInEscrow(req.body.payload.payment.entity);
+}`,
+            rationale: 'Implements an immutable payment escrow state machine that prevents premature funds distribution until client milestone approval.'
+        }
+    };
+
+    // =========================================================================
+    // 13. LUXURY WEB AUDIO SYNTHESIZER (MICRO-SOUND DESIGN)
+    // =========================================================================
+    let audioCtx = null;
+    let isSoundEnabled = false;
+
+    function initWebAudioSynthesizer() {
+        const toggleBtn = document.getElementById('soundToggleBtn');
+        const hudBtn = document.getElementById('hudSoundBtn');
+        const soundLabel = document.getElementById('soundLabel');
+        const hudSoundText = document.getElementById('hudSoundText');
+
+        const stored = localStorage.getItem('bhawana_portfolio_sfx');
+        if (stored === 'enabled') {
+            isSoundEnabled = true;
+            updateSoundUI();
+        }
+
+        function ensureAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function updateSoundUI() {
+            if (toggleBtn) {
+                if (isSoundEnabled) toggleBtn.classList.add('sound-active');
+                else toggleBtn.classList.remove('sound-active');
+            }
+            if (hudBtn) {
+                if (isSoundEnabled) hudBtn.classList.add('sound-active');
+                else hudBtn.classList.remove('sound-active');
+            }
+            if (soundLabel) soundLabel.textContent = isSoundEnabled ? 'SFX: ON' : 'SFX: OFF';
+            if (hudSoundText) hudSoundText.textContent = isSoundEnabled ? 'SFX: ON' : 'SFX: OFF';
+        }
+
+        function toggleSound() {
+            ensureAudioContext();
+            isSoundEnabled = !isSoundEnabled;
+            localStorage.setItem('bhawana_portfolio_sfx', isSoundEnabled ? 'enabled' : 'disabled');
+            updateSoundUI();
+            if (isSoundEnabled) {
+                playSynthTone(587.33, 0.08, 'sine', 0.035);
+                setTimeout(() => playSynthTone(880, 0.12, 'sine', 0.04), 80);
+            }
+        }
+
+        if (toggleBtn) toggleBtn.addEventListener('click', toggleSound);
+        if (hudBtn) hudBtn.addEventListener('click', toggleSound);
+
+        const resumeOnInteraction = () => {
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            window.removeEventListener('click', resumeOnInteraction);
+            window.removeEventListener('keydown', resumeOnInteraction);
+        };
+        window.addEventListener('click', resumeOnInteraction, { once: true });
+        window.addEventListener('keydown', resumeOnInteraction, { once: true });
+    }
+
+    function playSynthTone(freq, duration = 0.05, type = 'sine', vol = 0.03) {
+        if (!isSoundEnabled || !audioCtx) return;
+        try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch (e) {}
+    }
+
+    function playSound(type) {
+        if (!isSoundEnabled || !audioCtx) return;
+        if (type === 'hover') {
+            playSynthTone(740, 0.03, 'sine', 0.015);
+        } else if (type === 'click') {
+            playSynthTone(320, 0.06, 'triangle', 0.035);
+        } else if (type === 'drum') {
+            playSynthTone(480, 0.04, 'sine', 0.02);
+        } else if (type === 'success') {
+            playSynthTone(523.25, 0.1, 'sine', 0.04);
+            setTimeout(() => playSynthTone(659.25, 0.12, 'sine', 0.04), 90);
+            setTimeout(() => playSynthTone(783.99, 0.22, 'sine', 0.05), 180);
+        }
+    }
+
+    // =========================================================================
+    // 14. CUSTOM INERTIA CURSOR ENGINE WITH CONTEXT BADGES
+    // =========================================================================
+    function initCustomInertiaCursor() {
+        if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+
+        const cursor = document.getElementById('customCursor');
+        const dot = document.getElementById('cursorDot');
+        const ring = document.getElementById('cursorRing');
+        const badge = document.getElementById('cursorBadge');
+        if (!cursor || !dot || !ring) return;
+
+        let mouseX = -100, mouseY = -100;
+        let ringX = -100, ringY = -100;
+        let isVisible = false;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            if (!isVisible) {
+                isVisible = true;
+                cursor.style.opacity = '1';
+                ringX = mouseX;
+                ringY = mouseY;
+            }
+        }, { passive: true });
+
+        document.addEventListener('mouseleave', () => {
+            isVisible = false;
+            cursor.style.opacity = '0';
+        });
+
+        function animateCursor() {
+            if (isVisible) {
+                dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+                ringX += (mouseX - ringX) * 0.18;
+                ringY += (mouseY - ringY) * 0.18;
+                ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+            }
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        function attachCursorAffordances() {
+            document.querySelectorAll('a, button, input, textarea, [role="button"]').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover-interactive');
+                    playSound('hover');
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover-interactive');
+                });
+                el.addEventListener('click', () => {
+                    playSound('click');
+                });
+            });
+
+            document.querySelectorAll('.works-wheel-stage, .panoramic-fan-container').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover-drag');
+                    if (badge) badge.textContent = 'DRAG 3D';
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover-drag');
+                    if (badge) badge.textContent = '';
+                });
+            });
+
+            document.querySelectorAll('.project-lab-card').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover-view');
+                    if (badge) badge.textContent = 'VIEW CASE';
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover-view');
+                    if (badge) badge.textContent = '';
+                });
+            });
+
+            document.querySelectorAll('.arch-interactive-node').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover-view');
+                    if (badge) badge.textContent = 'INSPECT';
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover-view');
+                    if (badge) badge.textContent = '';
+                });
+            });
+        }
+        attachCursorAffordances();
+    }
+
+    // =========================================================================
+    // 15. DYNAMIC CARD SPOTLIGHT SHIMMER
+    // =========================================================================
+    function initCardSpotlight() {
+        const cards = document.querySelectorAll('.project-lab-card, .fan-card, .arch-deep-card, .exp-item-card, .skill-category-card, .cert-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    }
+
+    // =========================================================================
+    // 16. LIVE TELEMETRY HUD & NAINITAL (IST) CLOCK
+    // =========================================================================
+    function initLiveTelemetryHUD() {
+        const clockEl = document.getElementById('hudClock');
+        const fpsEl = document.getElementById('hudFps');
+
+        function updateClock() {
+            if (clockEl) {
+                const now = new Date();
+                const istTime = now.toLocaleTimeString('en-US', {
+                    timeZone: 'Asia/Kolkata',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+                clockEl.textContent = `${istTime} IST`;
+            }
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        let frameCount = 0;
+        let lastTime = performance.now();
+        function measureFps(now) {
+            frameCount++;
+            if (now - lastTime >= 1000) {
+                const fps = Math.round((frameCount * 1000) / (now - lastTime));
+                if (fpsEl) fpsEl.textContent = `${fps} FPS`;
+                frameCount = 0;
+                lastTime = now;
+            }
+            requestAnimationFrame(measureFps);
+        }
+        requestAnimationFrame(measureFps);
+    }
+
+    // =========================================================================
+    // 17. ARCHITECTURE NODE TELEMETRY INSPECTOR MODAL
+    // =========================================================================
+    function initArchitectureTelemetryModal() {
+        const modal = document.getElementById('archModal');
+        const modalBody = document.getElementById('archModalBody');
+        const closeBtn = document.getElementById('archModalCloseBtn');
+        const backdrop = document.getElementById('archModalBackdrop');
+        const nodes = document.querySelectorAll('.arch-interactive-node');
+
+        if (!modal || !modalBody) return;
+
+        function openArchNodeModal(nodeKey) {
+            const data = ARCH_TELEMETRY[nodeKey];
+            if (!data) return;
+
+            modalBody.innerHTML = `
+                <div class="arch-telemetry-header">
+                    <div>
+                        <span class="arch-node-category">${data.category}</span>
+                        <h3 class="arch-telemetry-title" id="archModalTitle">${data.title}</h3>
+                    </div>
+                </div>
+                <div class="arch-telemetry-grid">
+                    ${data.specs.map(s => `
+                        <div class="arch-metric-card">
+                            <span class="arch-metric-val">${s.val}</span>
+                            <span class="arch-metric-lbl">${s.label}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <h4 style="font-size:0.85rem; color:#8c54ff; font-family:var(--font-mono); margin-bottom:0.5rem; text-transform:uppercase;">Architectural Implementation Specification:</h4>
+                <pre class="arch-code-block"><code>${escapeHtml(data.code)}</code></pre>
+                <div style="background:rgba(255,255,255,0.02); border-left:3px solid var(--accent-cyan); padding:0.85rem 1rem; border-radius:0 8px 8px 0;">
+                    <strong style="color:#ffffff; font-size:0.85rem; display:block; margin-bottom:0.25rem;">Engineering Rationale:</strong>
+                    <p style="color:var(--text-secondary); font-size:0.88rem; line-height:1.5;">${data.rationale}</p>
+                </div>
+            `;
+
+            modal.removeAttribute('hidden');
+            document.body.style.overflow = 'hidden';
+            if (closeBtn) closeBtn.focus();
+            playSound('click');
+        }
+
+        function closeArchNodeModal() {
+            modal.setAttribute('hidden', '');
+            document.body.style.overflow = '';
+        }
+
+        nodes.forEach(node => {
+            const key = node.getAttribute('data-arch-node');
+            node.addEventListener('click', () => openArchNodeModal(key));
+            node.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openArchNodeModal(key);
+                }
+            });
+        });
+
+        if (closeBtn) closeBtn.addEventListener('click', closeArchNodeModal);
+        if (backdrop) backdrop.addEventListener('click', closeArchNodeModal);
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.hasAttribute('hidden')) {
+                closeArchNodeModal();
+            }
+        });
+    }
+
+    // =========================================================================
+    // 18. BOOTSTRAP ALL ENGINES ON DOM READY
     // =========================================================================
     document.addEventListener('DOMContentLoaded', () => {
         initKineticCanvasTrail();
@@ -1162,6 +1766,11 @@
         initCopyEmail();
         initScrollProgressAndNav();
         initMobileMenuAndYear();
+        initWebAudioSynthesizer();
+        initCustomInertiaCursor();
+        initCardSpotlight();
+        initLiveTelemetryHUD();
+        initArchitectureTelemetryModal();
     });
 
 })();

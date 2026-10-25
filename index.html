@@ -31,6 +31,23 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 </head>
 <body class="bg-primary text-primary selection-accent">
+    <!-- Tactile Film Grain Luxury Noise Overlay -->
+    <svg class="film-grain-overlay" aria-hidden="true" width="100%" height="100%">
+        <filter id="grainFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.04 0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#grainFilter)" />
+    </svg>
+
+    <!-- Custom Smooth Inertia Cursor with Context Badges -->
+    <div class="custom-cursor" id="customCursor" aria-hidden="true">
+        <div class="cursor-dot" id="cursorDot"></div>
+        <div class="cursor-ring" id="cursorRing">
+            <span class="cursor-badge" id="cursorBadge"></span>
+        </div>
+    </div>
+
     <!-- Kinetic Physics Lines Mouse Trail Canvas (from canvas.tsx) -->
     <canvas id="canvas" class="kinetic-canvas" aria-hidden="true"></canvas>
 
@@ -75,6 +92,14 @@
             </nav>
 
             <div class="header-actions">
+                <!-- Luxury Web Audio Synthesizer Toggle -->
+                <button class="btn btn-sm btn-ghost sound-toggle-btn" id="soundToggleBtn" aria-label="Toggle Sound Effects" title="Interactive Audio">
+                    <span class="sound-bars" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span class="sound-label" id="soundLabel">SFX</span>
+                </button>
+
                 <a href="assets/BHAWANA_BISHT_RESUME-2026.pdf" download class="btn btn-sm btn-ghost header-resume-btn" aria-label="Download Resume PDF">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                     <span>Resume</span>
@@ -263,11 +288,23 @@
                 <div class="wheel-index-list" id="wheelIndexList" aria-label="Projects list index">
                     <!-- Populated dynamically -->
                 </div>
+                <!-- Wheel Navigation Controls & Progress Ring -->
+                <div class="wheel-stage-controls">
+                    <button type="button" class="wheel-control-btn prev" id="wheelPrevBtn" aria-label="Previous Project (Left Arrow)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <div class="wheel-progress-track">
+                        <div class="wheel-progress-bar" id="wheelProgressBar"></div>
+                    </div>
+                    <button type="button" class="wheel-control-btn next" id="wheelNextBtn" aria-label="Next Project (Right Arrow)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
             </div>
 
             <!-- Wheel Controls Help Bar -->
             <div class="wheel-controls-hint container">
-                <span>✦ Scroll mouse wheel or drag vertically to rotate the drum &bull; Press ↑ / ↓ arrow keys &bull; Click any project to open full case study</span>
+                <span>✦ Scroll mouse wheel or drag vertically to rotate the drum &bull; Press [←] [→] or [↑] [↓] &bull; Click any project to inspect case study</span>
             </div>
         </section>
 
@@ -279,6 +316,16 @@
                     <div class="section-badge">Verified Engineering</div>
                     <h2 class="section-title">Project Laboratory</h2>
                     <p class="section-desc">Production systems, intelligent web platforms, and client applications built with modern architectures.</p>
+                </div>
+
+                <!-- Instant Tech Stack Live Search -->
+                <div class="project-search-container">
+                    <div class="search-input-wrapper">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="projectSearchInput" class="project-search-input" placeholder="Search by stack or keyword (e.g. Next.js, NestJS, Redis, FastAPI, Python, React)..." aria-label="Search projects by tech stack">
+                        <button type="button" id="clearSearchBtn" class="clear-search-btn" hidden aria-label="Clear Search">&times;</button>
+                    </div>
+                    <div class="search-stats-badge" id="searchStatsBadge">10 Projects</div>
                 </div>
 
                 <!-- Filter Pills -->
@@ -303,7 +350,7 @@
                 <div class="section-header text-center">
                     <div class="section-badge">Engineering Depth</div>
                     <h2 class="section-title">Technical System Architecture</h2>
-                    <p class="section-desc">Interactive diagrams detailing the architectural layers, data flows, and security protocols of my flagship systems.</p>
+                    <p class="section-desc">Interactive diagrams detailing the architectural layers, data flows, and security protocols. Click any layer node to inspect telemetry and rationale.</p>
                 </div>
 
                 <div class="architecture-deck">
@@ -321,48 +368,53 @@
                         <div class="arch-diagram-flow">
                             <div class="flow-tier">
                                 <div class="tier-label">Client Layer</div>
-                                <div class="tier-box">
+                                <div class="tier-box arch-interactive-node" data-arch-node="client-nextjs" role="button" tabindex="0" title="Click to inspect Client Architecture">
                                     <strong>Next.js 16 &bull; React 19</strong>
                                     <span>App Router &bull; Turborepo &bull; Role-Based UI</span>
+                                    <span class="node-inspect-badge">Inspect &rarr;</span>
                                 </div>
                             </div>
                             <div class="flow-divider">&darr; &uarr;</div>
                             <div class="flow-tier">
                                 <div class="tier-label">API Gateway &amp; Auth</div>
-                                <div class="tier-box highlight-purple">
+                                <div class="tier-box highlight-purple arch-interactive-node" data-arch-node="gateway-nestjs" role="button" tabindex="0" title="Click to inspect NestJS Gateway">
                                     <strong>NestJS 11 Gateway</strong>
                                     <span>RBAC Guards &bull; JWT Rotation &bull; Redis 7 Blacklist</span>
+                                    <span class="node-inspect-badge">Inspect &rarr;</span>
                                 </div>
                             </div>
                             <div class="flow-divider">&darr; &uarr;</div>
                             <div class="flow-tier tier-split">
                                 <div class="tier-sub-box">
                                     <div class="tier-label">Transactional DB</div>
-                                    <div class="tier-box highlight-blue">
+                                    <div class="tier-box highlight-blue arch-interactive-node" data-arch-node="db-postgres" role="button" tabindex="0" title="Click to inspect PostgreSQL & Prisma">
                                         <strong>Prisma 7 &bull; PostgreSQL 17</strong>
                                         <span>Tenant Isolation &bull; Soft Deletion &bull; Seed Scripts</span>
+                                        <span class="node-inspect-badge">Inspect &rarr;</span>
                                     </div>
                                 </div>
                                 <div class="tier-sub-box">
                                     <div class="tier-label">Predictive ML Service</div>
-                                    <div class="tier-box highlight-cyan">
+                                    <div class="tier-box highlight-cyan arch-interactive-node" data-arch-node="ml-prophet" role="button" tabindex="0" title="Click to inspect Forecasting Engine">
                                         <strong>FastAPI &bull; Prophet</strong>
                                         <span>Demand Forecasting &bull; Redis Cached Inferences</span>
+                                        <span class="node-inspect-badge">Inspect &rarr;</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="flow-divider">&darr; &uarr;</div>
                             <div class="flow-tier">
                                 <div class="tier-label">DevOps &amp; Security</div>
-                                <div class="tier-box">
+                                <div class="tier-box arch-interactive-node" data-arch-node="devops-docker" role="button" tabindex="0" title="Click to inspect DevOps & Security">
                                     <strong>Docker Compose &bull; GitHub Actions &bull; Trivy</strong>
                                     <span>Automated CI/CD &bull; Container Vulnerability Scanning</span>
+                                    <span class="node-inspect-badge">Inspect &rarr;</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="arch-card-bottom">
-                            <span><strong>Status:</strong> Completed (May–July 2026) &bull; Verified Monorepo Architecture</span>
+                            <span><strong>Status:</strong> Completed (May–July 2026) &bull; Click any layer for deep telemetry</span>
                             <a href="#projects" class="arch-action-link">View Full Project Details &rarr;</a>
                         </div>
                     </div>
@@ -381,7 +433,7 @@
                         <div class="arch-diagram-flow horizontal-flow">
                             <div class="h-flow-step">
                                 <span class="h-num">01</span>
-                                <div class="h-box">
+                                <div class="h-box arch-interactive-node" data-arch-node="auth-rbac" role="button" tabindex="0">
                                     <strong>Client &amp; Freelancer</strong>
                                     <span>Google OAuth &bull; 2FA &bull; RBAC</span>
                                 </div>
@@ -389,7 +441,7 @@
                             <div class="h-arrow">&rarr;</div>
                             <div class="h-flow-step">
                                 <span class="h-num">02</span>
-                                <div class="h-box highlight-purple">
+                                <div class="h-box highlight-purple arch-interactive-node" data-arch-node="ai-embeddings" role="button" tabindex="0">
                                     <strong>Hugging Face AI</strong>
                                     <span>Semantic Skill Matching</span>
                                 </div>
@@ -397,7 +449,7 @@
                             <div class="h-arrow">&rarr;</div>
                             <div class="h-flow-step">
                                 <span class="h-num">03</span>
-                                <div class="h-box highlight-blue">
+                                <div class="h-box highlight-blue arch-interactive-node" data-arch-node="socket-redis" role="button" tabindex="0">
                                     <strong>Socket.IO &bull; Redis</strong>
                                     <span>Duplex Rooms &bull; Collaboration</span>
                                 </div>
@@ -405,7 +457,7 @@
                             <div class="h-arrow">&rarr;</div>
                             <div class="h-flow-step">
                                 <span class="h-num">04</span>
-                                <div class="h-box highlight-cyan">
+                                <div class="h-box highlight-cyan arch-interactive-node" data-arch-node="razorpay-escrow" role="button" tabindex="0">
                                     <strong>Razorpay Escrow</strong>
                                     <span>Milestone Release &bull; Audit Log</span>
                                 </div>
@@ -900,6 +952,45 @@
             </div>
         </div>
     </div>
+
+    <!-- Architecture Node Telemetry & Specification Inspector Modal -->
+    <div class="arch-inspector-modal" id="archModal" role="dialog" aria-modal="true" aria-labelledby="archModalTitle" hidden>
+        <div class="modal-backdrop" id="archModalBackdrop"></div>
+        <div class="modal-container arch-modal-container">
+            <button type="button" class="modal-close-btn" id="archModalCloseBtn" aria-label="Close Architecture Inspector">&times;</button>
+            <div class="arch-modal-body" id="archModalBody">
+                <!-- Dynamically injected -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Glassmorphism Command Dock (HUD) -->
+    <aside class="floating-hud-dock" id="floatingHud" aria-label="System telemetry and quick controls">
+        <div class="hud-pill">
+            <div class="hud-section hud-time" title="Local Time in Nainital, India">
+                <span class="hud-clock-icon">🕒</span>
+                <span class="hud-mono" id="hudClock">--:-- IST</span>
+            </div>
+            <div class="hud-divider"></div>
+            <div class="hud-section hud-status" title="Current Professional Status">
+                <span class="pulse-emerald-dot"></span>
+                <span class="hud-text">NexGeTech AI Dev</span>
+            </div>
+            <div class="hud-divider"></div>
+            <div class="hud-section hud-telemetry" title="Real-time rendering performance">
+                <span class="hud-fps" id="hudFps">60 FPS</span>
+            </div>
+            <div class="hud-divider"></div>
+            <button type="button" class="hud-btn hud-sound" id="hudSoundBtn" aria-label="Toggle Interactive Audio" title="Toggle Sound Synthesizer">
+                <span class="sound-icon-micro">♫</span>
+                <span class="hud-sound-text" id="hudSoundText">SFX: OFF</span>
+            </button>
+            <div class="hud-divider"></div>
+            <a href="#contact" class="hud-btn hud-action" title="Quick Message to Bhawana">
+                <span>Connect &rarr;</span>
+            </a>
+        </div>
+    </aside>
 
     <!-- Toast Notification Element -->
     <div class="toast-alert" id="toastAlert" role="status" aria-live="polite"></div>
