@@ -25,12 +25,60 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Devicons for tech stack icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/devicon.min.css">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 </head>
 <body class="bg-primary text-primary selection-accent">
+
+    <!-- ====================================================================
+         MACBOOK INTRO ANIMATION SCREEN
+         ==================================================================== -->
+    <div id="mbIntro" class="mb-intro" role="progressbar" aria-label="Portfolio loading animation">
+        <div class="mb-scene" id="mbScene">
+            <div class="mb-wrap">
+                <!-- Screen / Lid -->
+                <div class="mb-lid">
+                    <div class="mb-lid-face">
+                        <div class="mb-webcam"></div>
+                        <div class="mb-screen-area">
+                            <div class="mb-screen-glare"></div>
+                            <div class="mb-screen-ui">
+                                <div class="mb-sc-dots">
+                                    <span class="mb-sc-red"></span>
+                                    <span class="mb-sc-yellow"></span>
+                                    <span class="mb-sc-green"></span>
+                                </div>
+                                <div class="mb-sc-logo">◈ Bhawana.dev</div>
+                                <div class="mb-sc-subtitle">AI APPLICATION DEVELOPER</div>
+                                <div class="mb-sc-bars">
+                                    <div class="mb-sc-bar"><div class="mb-sc-bar-inner"></div></div>
+                                    <div class="mb-sc-bar mb-sc-bar-short"><div class="mb-sc-bar-inner"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Base / Keyboard -->
+                <div class="mb-base">
+                    <div class="mb-base-face">
+                        <div class="mb-touchpad"></div>
+                        <div class="mb-keyboard-wrap" id="mbKeyboard"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-ground-shadow"></div>
+        </div>
+        <div class="mb-intro-footer">
+            <span class="mb-loading-text">Initializing portfolio</span>
+            <span class="mb-loading-dots"><span>.</span><span>.</span><span>.</span></span>
+        </div>
+        <button class="mb-skip-btn" id="mbSkipBtn" aria-label="Skip intro">Skip →</button>
+    </div>
+
     <!-- Tactile Film Grain Luxury Noise Overlay -->
     <svg class="film-grain-overlay" aria-hidden="true" width="100%" height="100%">
         <filter id="grainFilter">
@@ -615,111 +663,150 @@
 
                 <!-- Categorized Technical Skill Clusters -->
                 <div class="skills-categories-grid">
-                    <div class="skill-category-card">
+
+                    <!-- ── Frontend Architecture ── -->
+                    <div class="skill-category-card" data-cat="frontend">
                         <div class="category-header">
-                            <span class="category-icon">⚛️</span>
-                            <h3>Frontend Architecture</h3>
+                            <div class="cat-icon-wrap cat-icon-cyan">
+                                <i class="devicon-react-original colored"></i>
+                            </div>
+                            <div>
+                                <h3>Frontend Architecture</h3>
+                                <span class="cat-pill-count">9 technologies</span>
+                            </div>
                         </div>
                         <ul class="tech-pills">
-                            <li>React 19</li>
-                            <li>Next.js 16 (App Router)</li>
-                            <li>TypeScript</li>
-                            <li>JavaScript (ES6+)</li>
-                            <li>Tailwind CSS</li>
-                            <li>Material UI</li>
-                            <li>Redux Toolkit</li>
-                            <li>React Query</li>
-                            <li>Vite</li>
+                            <li><i class="devicon-react-original colored"></i>React 19</li>
+                            <li><i class="devicon-nextjs-plain"></i>Next.js 16</li>
+                            <li><i class="devicon-typescript-plain colored"></i>TypeScript</li>
+                            <li><i class="devicon-javascript-plain colored"></i>JavaScript ES6+</li>
+                            <li><i class="devicon-tailwindcss-plain colored"></i>Tailwind CSS</li>
+                            <li><i class="devicon-materialui-plain colored"></i>Material UI</li>
+                            <li><i class="devicon-redux-original colored"></i>Redux Toolkit</li>
+                            <li><i class="devicon-reactquery-plain colored" style="color:#ef4444"></i>React Query</li>
+                            <li><i class="devicon-vitejs-plain colored"></i>Vite</li>
                         </ul>
                     </div>
 
-                    <div class="skill-category-card">
+                    <!-- ── Backend & APIs ── -->
+                    <div class="skill-category-card" data-cat="backend">
                         <div class="category-header">
-                            <span class="category-icon">⚙️</span>
-                            <h3>Backend &amp; Distributed APIs</h3>
+                            <div class="cat-icon-wrap cat-icon-violet">
+                                <i class="devicon-nodejs-plain colored"></i>
+                            </div>
+                            <div>
+                                <h3>Backend &amp; APIs</h3>
+                                <span class="cat-pill-count">10 technologies</span>
+                            </div>
                         </div>
                         <ul class="tech-pills">
-                            <li>Node.js</li>
-                            <li>Express.js</li>
-                            <li>NestJS 11</li>
-                            <li>FastAPI</li>
-                            <li>REST APIs</li>
-                            <li>Socket.IO</li>
-                            <li>WebSockets</li>
-                            <li>Celery</li>
-                            <li>Pydantic</li>
-                            <li>JWT &amp; RBAC</li>
+                            <li><i class="devicon-nodejs-plain colored"></i>Node.js</li>
+                            <li><i class="devicon-express-original"></i>Express.js</li>
+                            <li><i class="devicon-nestjs-plain colored"></i>NestJS 11</li>
+                            <li><i class="devicon-fastapi-plain colored"></i>FastAPI</li>
+                            <li><i class="devicon-python-plain colored"></i>Python</li>
+                            <li><i class="devicon-socketio-original"></i>Socket.IO</li>
+                            <li>🔌 WebSockets</li>
+                            <li><i class="devicon-celery-plain colored"></i>Celery</li>
+                            <li>🔷 Pydantic</li>
+                            <li>🔐 JWT &amp; RBAC</li>
                         </ul>
                     </div>
 
-                    <div class="skill-category-card">
+                    <!-- ── AI & LLM Engineering ── -->
+                    <div class="skill-category-card" data-cat="ai">
                         <div class="category-header">
-                            <span class="category-icon">🧠</span>
-                            <h3>AI &amp; LLM Engineering</h3>
+                            <div class="cat-icon-wrap cat-icon-emerald">
+                                <i class="devicon-python-plain colored"></i>
+                            </div>
+                            <div>
+                                <h3>AI &amp; LLM Engineering</h3>
+                                <span class="cat-pill-count">8 technologies</span>
+                            </div>
                         </div>
                         <ul class="tech-pills">
-                            <li>OpenRouter API</li>
-                            <li>Anthropic Claude</li>
-                            <li>OpenAI GPT-4</li>
-                            <li>Hugging Face</li>
-                            <li>Llama-3 (Groq API)</li>
-                            <li>Prophet ML</li>
-                            <li>Prompt Engineering</li>
-                            <li>AI Automation Workflows</li>
+                            <li>🌐 OpenRouter API</li>
+                            <li>🧠 Anthropic Claude</li>
+                            <li>✨ OpenAI GPT-4</li>
+                            <li><i class="devicon-huggingface-plain colored"></i>Hugging Face</li>
+                            <li>🦙 Llama-3 (Groq)</li>
+                            <li>📈 Prophet ML</li>
+                            <li>💬 Prompt Engineering</li>
+                            <li>⚙️ AI Automation</li>
                         </ul>
                     </div>
 
-                    <div class="skill-category-card">
+                    <!-- ── Databases & Caching ── -->
+                    <div class="skill-category-card" data-cat="database">
                         <div class="category-header">
-                            <span class="category-icon">💾</span>
-                            <h3>Databases &amp; Caching</h3>
+                            <div class="cat-icon-wrap cat-icon-orange">
+                                <i class="devicon-postgresql-plain colored"></i>
+                            </div>
+                            <div>
+                                <h3>Databases &amp; Caching</h3>
+                                <span class="cat-pill-count">8 technologies</span>
+                            </div>
                         </div>
                         <ul class="tech-pills">
-                            <li>PostgreSQL 17</li>
-                            <li>MongoDB</li>
-                            <li>Redis 7</li>
-                            <li>Prisma 7 ORM</li>
-                            <li>Supabase</li>
-                            <li>MySQL</li>
-                            <li>Firebase</li>
-                            <li>Alembic</li>
+                            <li><i class="devicon-postgresql-plain colored"></i>PostgreSQL 17</li>
+                            <li><i class="devicon-mongodb-plain colored"></i>MongoDB</li>
+                            <li><i class="devicon-redis-plain colored"></i>Redis 7</li>
+                            <li><i class="devicon-prisma-original"></i>Prisma ORM</li>
+                            <li><i class="devicon-supabase-plain colored"></i>Supabase</li>
+                            <li><i class="devicon-mysql-plain colored"></i>MySQL</li>
+                            <li><i class="devicon-firebase-plain colored"></i>Firebase</li>
+                            <li>🔄 Alembic</li>
                         </ul>
                     </div>
 
-                    <div class="skill-category-card">
+                    <!-- ── DevOps & Infrastructure ── -->
+                    <div class="skill-category-card" data-cat="devops">
                         <div class="category-header">
-                            <span class="category-icon">🚀</span>
-                            <h3>DevOps &amp; Infrastructure</h3>
+                            <div class="cat-icon-wrap cat-icon-cyan">
+                                <i class="devicon-docker-plain colored"></i>
+                            </div>
+                            <div>
+                                <h3>DevOps &amp; Infra</h3>
+                                <span class="cat-pill-count">8 technologies</span>
+                            </div>
                         </div>
                         <ul class="tech-pills">
-                            <li>Docker &bull; Compose</li>
-                            <li>GitHub Actions CI/CD</li>
-                            <li>Trivy Security Scan</li>
-                            <li>pnpm &bull; Turborepo</li>
-                            <li>Git &bull; GitHub</li>
-                            <li>Vercel &bull; Render</li>
-                            <li>Jest Testing</li>
-                            <li>ESLint</li>
+                            <li><i class="devicon-docker-plain colored"></i>Docker &amp; Compose</li>
+                            <li><i class="devicon-githubactions-plain colored"></i>GitHub Actions</li>
+                            <li>🛡️ Trivy Security</li>
+                            <li><i class="devicon-pnpm-plain colored"></i>pnpm · Turborepo</li>
+                            <li><i class="devicon-git-plain colored"></i>Git · GitHub</li>
+                            <li><i class="devicon-vercel-original"></i>Vercel</li>
+                            <li>☁️ Render</li>
+                            <li><i class="devicon-jest-plain colored"></i>Jest Testing</li>
                         </ul>
                     </div>
 
-                    <div class="skill-category-card">
+                    <!-- ── Core Engineering ── -->
+                    <div class="skill-category-card" data-cat="core">
                         <div class="category-header">
-                            <span class="category-icon">📐</span>
-                            <h3>Core Engineering</h3>
+                            <div class="cat-icon-wrap cat-icon-violet">
+                                <i class="devicon-cplusplus-plain colored"></i>
+                            </div>
+                            <div>
+                                <h3>Core Engineering</h3>
+                                <span class="cat-pill-count">6 disciplines</span>
+                            </div>
                         </div>
                         <ul class="tech-pills">
-                            <li>Data Structures &amp; Algorithms</li>
-                            <li>System Design</li>
-                            <li>Database Indexing &bull; Normalization</li>
-                            <li>Authentication &bull; Token Revocation</li>
-                            <li>Asynchronous Processing</li>
-                            <li>Multi-Tenant Architectures</li>
+                            <li>🧮 DSA</li>
+                            <li>🏗️ System Design</li>
+                            <li>🗄️ DB Indexing &amp; Normalization</li>
+                            <li>🔑 Auth &amp; Token Revocation</li>
+                            <li>⚡ Async Processing</li>
+                            <li>🏢 Multi-Tenant Arch</li>
                         </ul>
                     </div>
+
                 </div>
             </div>
         </section>
+
 
 
         <!-- SECTION 7: AUTHENTIC CERTIFICATIONS GALLERY -->
