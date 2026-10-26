@@ -37,7 +37,7 @@
     <!-- ====================================================================
          MACBOOK INTRO ANIMATION SCREEN
          ==================================================================== -->
-    <div id="mbIntro" class="mb-intro fixed inset-0 z-50 flex items-center justify-center bg-[#06070c]" role="progressbar" aria-label="Portfolio loading animation">
+    <div id="mbIntro" class="mb-intro fixed inset-0 z-50 flex items-center justify-center bg-[#06070c]" role="dialog" aria-modal="true" aria-label="Portfolio loading animation">
       <div class="macbook-container w-[150px] h-[96px] absolute left-1/2 top-1/2 mt-[-85px] ml-[-78px] z-20">
         <div class="macbook-inner custom-animate-rotate absolute w-[150px] h-[96px] left-0 top-0">
           <!-- Screen -->
@@ -151,7 +151,7 @@
         <div class="macbook-shadow absolute w-[60px] h-[0px] left-[40px] top-[160px] shadow-[0_0_60px_40px_rgba(0,0,0,0.3)] custom-animate-macbook-shadow"></div>
       </div>
       <div class="mb-intro-footer absolute bottom-[10%] left-1/2 transform -translate-x-1/2 text-center">
-        <span class="mb-loading-text text-sm text-[#00d0ff] animate-pulse">Initializing Portfolio</span>
+        <span class="mb-loading-text text-sm text-[#00d0ff]">Initializing Portfolio</span>
         <span class="mb-loading-dots text-[#00d0ff]"><span>.</span><span>.</span><span>.</span></span>
       </div>
       <button class="mb-skip-btn absolute bottom-[5%] right-[5%] text-xs text-[#666] bg-[#1a1d2c] border border-[#334155] px-4 py-2 rounded hover:bg-[#8c54ff] hover:text-white transition-colors" id="mbSkipBtn" aria-label="Skip intro">Skip →</button>
@@ -178,10 +178,10 @@
           window.setTimeout(function() {
             mbIntro.classList.add('mb-hidden');
             document.body.style.overflow = '';
-          }, 1000);
+          }, 700);
         }
 
-        const introTimer = window.setTimeout(hideIntro, 5000);
+        const introTimer = window.setTimeout(hideIntro, 6000);
 
         if (skipBtn) {
           skipBtn.addEventListener('click', function() {
@@ -228,8 +228,8 @@
             <nav class="desktop-nav" role="navigation" aria-label="Main Navigation">
                 <ul class="nav-menu">
                     <li><a href="#home" class="nav-item active">Home</a></li>
-                    <li><a href="#featured-wheel" class="nav-item">Featured 3D</a></li>
-                    <li><a href="#projects" class="nav-item">Work</a></li>
+                    <li><a href="#featured-wheel" class="nav-item">Selected Work</a></li>
+                    <li><a href="#projects" class="nav-item">Projects</a></li>
                     <li><a href="#experience" class="nav-item">Experience</a></li>
                     <li><a href="#architecture" class="nav-item">Architecture</a></li>
                     <li><a href="#skills" class="nav-item">Skills</a></li>
@@ -266,8 +266,8 @@
         <div class="mobile-nav-drawer" id="mobileNavMenu" hidden>
             <ul class="mobile-nav-list">
                 <li><a href="#home" class="mobile-nav-link">Home</a></li>
-                <li><a href="#featured-wheel" class="mobile-nav-link">Featured 3D Works</a></li>
-                <li><a href="#projects" class="mobile-nav-link">Project Laboratory</a></li>
+                <li><a href="#featured-wheel" class="mobile-nav-link">Selected Work</a></li>
+                <li><a href="#projects" class="mobile-nav-link">Projects</a></li>
                 <li><a href="#experience" class="mobile-nav-link">Career Experience</a></li>
                 <li><a href="#architecture" class="mobile-nav-link">System Architecture</a></li>
                 <li><a href="#skills" class="mobile-nav-link">Technical Constellation</a></li>
@@ -347,64 +347,54 @@
         </section>
 
 
-        <!-- SECTION 2: 3D WORKS WHEEL (works-wheel.tsx 21st.dev implementation) -->
+        <!-- SECTION 2: SELECTED WORK -->
         <section class="section-wrapper works-wheel-section" id="featured-wheel" aria-labelledby="wheelHeading">
             <div class="container">
                 <div class="section-header text-center">
-                    <div class="section-badge">Interactive 3D Showcase</div>
-                    <h2 class="section-title" id="wheelHeading">Featured Works Wheel</h2>
-                    <p class="section-desc">Turn the 3D wheel using your mouse wheel, drag gesture, or arrow keys to browse production architectures.</p>
+                    <div class="section-badge">Portfolio Highlights</div>
+                    <h2 class="section-title" id="wheelHeading">Selected Work</h2>
+                    <p class="section-desc">Explore products, platforms, and systems in an immersive 3D showcase. Drag to explore or use the arrow keys to navigate.</p>
                 </div>
             </div>
 
-            <!-- 3D Drum Stage Container -->
             <div class="works-wheel-stage-container" id="wheelStageContainer">
-                <div class="works-wheel-stage" id="wheelStage" role="listbox" aria-label="Featured Projects 3D Wheel" tabindex="0">
+                <div class="works-wheel-stage" id="wheelStage" role="listbox" aria-label="Featured projects" tabindex="0">
                     <div class="works-wheel-drum" id="wheelDrum">
-                        <!-- 3D Cards placed dynamically by JavaScript geometry math -->
+                        <!-- Cards placed dynamically by JavaScript geometry math -->
                     </div>
                 </div>
-
-                <!-- Active Project Title (Trades place on the left) -->
-                <div class="wheel-active-title" id="wheelActiveTitle" aria-live="polite">
-                    <span class="wheel-counter" id="wheelCounter">01 // 06</span>
-                    <h3 class="wheel-title-text" id="wheelTitleText">AI-Powered Cloud ERP Suite</h3>
-                    <p class="wheel-title-desc" id="wheelTitleDesc">Multi-tenant enterprise resource planning platform covering finance, HR, and AI demand forecasting.</p>
-                    <div class="wheel-tech-tags" id="wheelTechTags">
-                        <span>Next.js 16</span>
-                        <span>NestJS 11</span>
-                        <span>FastAPI</span>
-                        <span>PostgreSQL 17</span>
-                        <span>Redis 7</span>
-                        <span>Docker</span>
-                    </div>
-                    <div class="wheel-cta-group" id="wheelCtaGroup">
-                        <button type="button" class="btn btn-sm btn-primary" id="wheelInspectBtn">Inspect Architecture &rarr;</button>
-                        <a href="https://github.com/Bhawana0218" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-ghost" id="wheelLiveLink">GitHub Repo</a>
-                    </div>
-                </div>
-
-                <!-- Wheel Index List on the right -->
-                <div class="wheel-index-list" id="wheelIndexList" aria-label="Projects list index">
-                    <!-- Populated dynamically -->
-                </div>
-                <!-- Wheel Navigation Controls & Progress Ring -->
                 <div class="wheel-stage-controls">
-                    <button type="button" class="wheel-control-btn prev" id="wheelPrevBtn" aria-label="Previous Project (Left Arrow)">
+                    <button type="button" class="wheel-control-btn prev" id="wheelPrevBtn" aria-label="Previous project">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
                     </button>
                     <div class="wheel-progress-track">
                         <div class="wheel-progress-bar" id="wheelProgressBar"></div>
                     </div>
-                    <button type="button" class="wheel-control-btn next" id="wheelNextBtn" aria-label="Next Project (Right Arrow)">
+                    <button type="button" class="wheel-control-btn next" id="wheelNextBtn" aria-label="Next project">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </button>
                 </div>
             </div>
 
-            <!-- Wheel Controls Help Bar -->
+            <div class="wheel-active-title" id="wheelActiveTitle" aria-live="polite">
+                <span class="wheel-counter" id="wheelCounter">01 // 06</span>
+                <h3 class="wheel-title-text" id="wheelTitleText">AI-Powered Cloud ERP Suite</h3>
+                <p class="wheel-title-desc" id="wheelTitleDesc">Multi-tenant enterprise resource planning platform covering finance, HR, and AI demand forecasting.</p>
+                <div class="wheel-tech-tags" id="wheelTechTags">
+                    <span>Next.js 16</span>
+                    <span>NestJS 11</span>
+                    <span>FastAPI</span>
+                    <span>PostgreSQL 17</span>
+                    <span>Redis 7</span>
+                    <span>Docker</span>
+                </div>
+                <div class="wheel-cta-group" id="wheelCtaGroup">
+                    <button type="button" class="btn btn-sm btn-primary" id="wheelInspectBtn">Explore Case Study &rarr;</button>
+                    <a href="https://github.com/Bhawana0218" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-ghost" id="wheelLiveLink">GitHub Repo</a>
+                </div>
+            </div>
             <div class="wheel-controls-hint container">
-                <span>✦ Scroll mouse wheel or drag vertically to rotate the drum &bull; Press [←] [→] or [↑] [↓] &bull; Click any project to inspect case study</span>
+                <span>Drag to explore &nbsp;·&nbsp; Use the arrow keys or controls to navigate &nbsp;·&nbsp; Select a card to open its case study</span>
             </div>
         </section>
 
@@ -414,7 +404,7 @@
             <div class="container">
                 <div class="section-header text-center">
                     <div class="section-badge">Verified Engineering</div>
-                    <h2 class="section-title">Project Laboratory</h2>
+                    <h2 class="section-title">Selected Projects</h2>
                     <p class="section-desc">Production systems, intelligent web platforms, and client applications built with modern architectures.</p>
                 </div>
 
@@ -449,7 +439,7 @@
             <div class="container">
                 <div class="section-header text-center">
                     <div class="section-badge">Engineering Depth</div>
-                    <h2 class="section-title">Technical System Architecture</h2>
+                    <h2 class="section-title">Systems Architecture</h2>
                     <p class="section-desc">Interactive diagrams detailing the architectural layers, data flows, and security protocols. Click any layer node to inspect telemetry and rationale.</p>
                 </div>
 
@@ -579,7 +569,7 @@
             <div class="container">
                 <div class="section-header text-center">
                     <div class="section-badge">Verified Career History</div>
-                    <h2 class="section-title">Professional Experience</h2>
+                    <h2 class="section-title">Experience</h2>
                     <p class="section-desc">Accredited engineering roles and full-time professional experience verified by my latest curriculum vitae.</p>
                 </div>
 
@@ -701,7 +691,7 @@
             <div class="container">
                 <div class="section-header text-center">
                     <div class="section-badge">Skill Ecosystem</div>
-                    <h2 class="section-title">Technical Constellation &amp; 3D Sphere</h2>
+                    <h2 class="section-title">Technical Expertise</h2>
                     <p class="section-desc">Interactive 3D tag sphere and categorized engineering disciplines verified from my production codebases.</p>
                 </div>
 
@@ -866,7 +856,7 @@
             <div class="container">
                 <div class="section-header text-center">
                     <div class="section-badge">Verified Credentials</div>
-                    <h2 class="section-title">Certifications &amp; Training</h2>
+                    <h2 class="section-title">Credentials &amp; Professional Development</h2>
                     <p class="section-desc">Authentic certificates and academic milestones verified from institutional records.</p>
                 </div>
 
@@ -954,7 +944,7 @@
             <div class="container">
                 <div class="section-header text-center">
                     <div class="section-badge">Get In Touch</div>
-                    <h2 class="section-title">Let's build something meaningful.</h2>
+                    <h2 class="section-title">Let’s build something exceptional.</h2>
                     <p class="section-desc">I'm interested in full-time software engineering opportunities, AI application development, and ambitious full-stack products.</p>
                 </div>
 
@@ -1161,8 +1151,8 @@
                     <h4>Navigation</h4>
                     <ul>
                         <li><a href="#home">Home</a></li>
-                        <li><a href="#featured-wheel">Featured 3D</a></li>
-                        <li><a href="#projects">Work</a></li>
+                        <li><a href="#featured-wheel">Selected Work</a></li>
+                        <li><a href="#projects">Projects</a></li>
                         <li><a href="#experience">Experience</a></li>
                     </ul>
                 </div>

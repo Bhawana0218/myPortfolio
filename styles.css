@@ -583,34 +583,47 @@ img {
 
 .section-header {
     margin-bottom: 3.5rem;
+    max-width: 860px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .section-header.text-center { text-align: center; }
 
 .section-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
     font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--accent-violet);
+    font-size: 0.72rem;
+    color: #82dbea;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.75rem;
-    background: rgba(140, 84, 255, 0.1);
-    padding: 0.25rem 0.8rem;
-    border-radius: var(--radius-pill);
-    border: 1px solid rgba(140, 84, 255, 0.3);
+    letter-spacing: 0.18em;
+    margin-bottom: 1rem;
+}
+
+.section-badge::before {
+    content: "";
+    width: 1.6rem;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent-cyan), transparent);
 }
 
 .section-title {
-    font-size: clamp(2rem, 3.4vw, 2.8rem);
-    letter-spacing: -0.02em;
-    margin-bottom: 0.85rem;
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 4.8vw, 3.6rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+    margin-bottom: 1rem;
+    text-wrap: balance;
 }
 
 .section-desc {
-    font-size: 1.05rem;
-    color: var(--text-secondary);
-    max-width: 680px;
+    font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+    color: #a9b1c1;
+    line-height: 1.75;
+    max-width: 720px;
     margin: 0 auto;
 }
 
@@ -618,14 +631,16 @@ img {
    SECTION 2: 3D WORKS WHEEL (works-wheel.tsx 21st.dev implementation)
    ========================================================================== */
 .works-wheel-section {
-    background: radial-gradient(ellipse at center, #0f1224 0%, var(--bg-base) 70%);
+    background: radial-gradient(ellipse at 50% 45%, rgba(19, 24, 42, 0.96) 0%, var(--bg-base) 72%);
     overflow: hidden;
 }
 
 .works-wheel-stage-container {
     position: relative;
     width: 100%;
-    height: 620px;
+    height: clamp(650px, 78vh, 900px);
+    max-width: 1720px;
+    margin: 0 auto;
     overflow: hidden;
     user-select: none;
 }
@@ -635,7 +650,7 @@ img {
     inset: 0;
     cursor: grab;
     outline: none;
-    perspective: 1200px;
+    perspective: 1600px;
     touch-action: pan-x;
 }
 
@@ -661,23 +676,25 @@ img {
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: var(--radius-md);
+    border-radius: 20px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: #0f1222;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.58);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
 }
 
 .wheel-card:hover .wheel-card-inner {
-    border-color: var(--accent-cyan);
-    box-shadow: 0 20px 50px rgba(0, 208, 255, 0.35);
+    border-color: rgba(130, 219, 234, 0.8);
+    box-shadow: 0 30px 76px rgba(0, 0, 0, 0.62), 0 0 28px rgba(0, 208, 255, 0.15);
+    filter: brightness(1.06);
 }
 
 .wheel-card-inner img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    user-select: none;
 }
 
 .wheel-card-badge {
@@ -698,96 +715,84 @@ img {
 
 /* Wheel Active Title Display */
 .wheel-active-title {
-    position: absolute;
-    top: 50%;
-    left: 5%;
-    transform: translateY(-50%);
-    max-width: 440px;
-    pointer-events: auto;
-    z-index: 10;
-    transition: opacity 0.3s ease;
+    position: relative;
+    z-index: 2;
+    width: min(880px, calc(100% - 3rem));
+    max-width: 880px;
+    margin: -1.1rem auto 0;
+    padding: 1.7rem 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgba(13, 17, 30, 0.96), rgba(9, 11, 20, 0.92));
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    text-align: center;
+    backdrop-filter: blur(18px);
 }
 
 .wheel-counter {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--accent-cyan);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: #82dbea;
     display: block;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.7rem;
 }
 
 .wheel-title-text {
-    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    font-size: clamp(1.55rem, 3vw, 2.3rem);
     line-height: 1.2;
-    margin-bottom: 0.85rem;
+    letter-spacing: -0.035em;
+    margin-bottom: 0.75rem;
 }
 
 .wheel-title-desc {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 1.2rem;
+    max-width: 680px;
+    margin: 0 auto 1rem;
+    font-size: 0.94rem;
+    color: #a9b1c1;
+    line-height: 1.65;
 }
 
 .wheel-tech-tags {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 0.4rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .wheel-tech-tags span {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    background: rgba(140, 84, 255, 0.12);
-    border: 1px solid rgba(140, 84, 255, 0.3);
-    color: #d8c7ff;
-    padding: 0.2rem 0.55rem;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    color: #c4ccda;
+    padding: 0.28rem 0.65rem;
     border-radius: var(--radius-sm);
 }
 
 .wheel-cta-group {
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 0.8rem;
 }
 
-/* Wheel Index List on the right */
-.wheel-index-list {
+.works-wheel-stage-container .wheel-stage-controls {
     position: absolute;
-    top: 10%;
-    right: 3%;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    text-align: right;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    z-index: 10;
-}
-
-.wheel-index-item {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.wheel-index-item:hover { color: #ffffff; }
-
-.wheel-index-item.active {
-    color: var(--accent-cyan);
-    font-weight: 700;
-    transform: translateX(-4px);
+    right: 0;
+    bottom: 1.4rem;
+    left: 0;
+    margin: 0;
 }
 
 .wheel-controls-hint {
     text-align: center;
-    font-size: 0.82rem;
+    font-size: 0.76rem;
     color: var(--text-muted);
     font-family: var(--font-mono);
-    margin-top: 1rem;
+    margin-top: 1.3rem;
+    letter-spacing: 0.035em;
 }
 
 /* ==========================================================================
@@ -2313,51 +2318,39 @@ body.cursor-hover-drag .cursor-badge {
         display: none;
     }
 }
-/* ==========================================================================
-   MACBOOK INTRO ANIMATION SCREEN
-   ========================================================================== */
+/* MacBook intro animation */
 .mb-intro {
     position: fixed;
     inset: 0;
     z-index: 999999;
-    background: #050608;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.mb-intro.mb-zooming {
-    transform: scale(1.8);
-    opacity: 0;
-    pointer-events: none;
-}
-
-.mb-intro.mb-hidden { display: none; }
-
-.mb-intro {
     overflow: hidden;
     isolation: isolate;
+    background: #06070c;
+    transition: opacity 650ms ease, transform 650ms ease;
 }
-
+.mb-intro.mb-intro-zoom-out { transform: scale(1.15); opacity: 0; pointer-events: none; }
+.mb-intro.mb-hidden { display: none; }
 .mb-intro .macbook-container {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 150px;
     height: 96px;
-    margin: 0;
     perspective: 1000px;
-    transform: translate(-50%, -50%) scale(1.45);
+    transform: translate(-50%, -50%) scale(1.9);
 }
-
 .mb-intro .macbook-inner {
     position: absolute;
     inset: 0;
+    z-index: 2;
+    width: 150px;
+    height: 96px;
     transform-style: preserve-3d;
+    animation: rotate 6s linear 1 both;
 }
-
 .mb-intro .macbook-screen,
 .mb-intro .macbook-body {
     position: absolute;
@@ -2367,11 +2360,15 @@ body.cursor-hover-drag .cursor-badge {
     border-radius: 7px;
     transform-style: preserve-3d;
 }
-
 .mb-intro .macbook-screen {
+    z-index: 2;
     transform-origin: center bottom;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.34), transparent);
+    background-position: left bottom;
+    background-size: 300px 300px;
+    box-shadow: inset 0 3px 7px rgba(255, 255, 255, 0.5);
+    animation: lid-screen 1s ease-in-out infinite;
 }
-
 .mb-intro .macbook-screen-face-one,
 .mb-intro .macbook-body-face-one {
     position: absolute;
@@ -2381,118 +2378,96 @@ body.cursor-hover-drag .cursor-badge {
     border-radius: 7px;
     transform-style: preserve-3d;
 }
-
 .mb-intro .macbook-screen-face-one {
-    background: linear-gradient(145deg, #d9d9d9, #b7b7b7);
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.24), transparent), #d3d3d3;
     transform: translateZ(2px);
 }
-
 .mb-intro .macbook-screen-face-one > div:first-child {
     position: absolute;
     top: 4px;
     left: 50%;
     width: 3px;
     height: 3px;
-    margin: 0;
+    margin-left: -1.5px;
     border-radius: 50%;
-    background: #111;
-    transform: translateX(-50%);
+    background: #000;
 }
-
 .mb-intro .macbook-screen-face-one > div:nth-child(2) {
     position: relative;
     width: 130px;
     height: 74px;
     margin: 10px;
     overflow: hidden;
-    border-radius: 2px;
-    background: radial-gradient(ellipse at 50% 40%, #15243a 0%, #070b14 75%);
-    box-shadow: inset 0 0 8px #000;
+    border-radius: 1px;
+    background: #000;
+    box-shadow: inset 0 0 2px #000;
 }
-
-.mb-intro .macbook-screen-face-one > div:nth-child(2)::before {
-    content: "Bhawana.dev";
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    color: #63e8ff;
-    font: 700 12px var(--font-heading);
-    letter-spacing: 0.02em;
-    text-shadow: 0 0 12px rgba(0, 208, 255, 0.65);
-}
-
-.mb-intro .macbook-screen-face-one > div:nth-child(2) > .custom-animate-screen-shade {
+.mb-intro .custom-animate-screen-shade {
     position: absolute;
     inset: 0;
     width: 130px;
     height: 74px;
-    margin: 0;
+    background: linear-gradient(-135deg, transparent 0%, rgba(255, 255, 255, 0.1) 47%, transparent 48%);
+    background-position: -20px 0;
+    background-size: 300px 200px;
+    animation: screen-shade 2s ease-in-out infinite;
     pointer-events: none;
 }
-
 .mb-intro .macbook-screen-face-one > span {
     position: absolute;
-    bottom: 0;
+    top: 85px;
     left: 57px;
     color: #666;
     font-size: 6px;
 }
-
 .mb-intro .macbook-body {
-    background: linear-gradient(145deg, #c5c5c5, #8f929b);
+    z-index: 1;
+    transform: rotateX(-90deg);
     transform-origin: center bottom;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.24), transparent), #cbcbcb;
+    animation: lid-macbody 1s ease-in-out infinite;
 }
-
 .mb-intro .macbook-body-face-one {
     overflow: hidden;
-    background: linear-gradient(145deg, #e0e0e0, #aaaeb8);
     transform: translateZ(-2px);
+    background: linear-gradient(30deg, rgba(0, 0, 0, 0.24), transparent), #dfdfdf;
+    animation: lid-keyboard-area 1s ease-in-out infinite;
 }
-
 .mb-intro .macbook-body-face-one > div:first-child {
     position: absolute;
-    top: 8px;
-    left: 55px;
+    top: 4px;
+    left: 57px;
     width: 40px;
-    height: 27px;
+    height: 31px;
     border-radius: 4px;
-    background: linear-gradient(145deg, #c8c8c8, #a6a6a6);
+    background: linear-gradient(30deg, rgba(0, 0, 0, 0.24), transparent), #cdcdcd;
     box-shadow: inset 0 0 3px #888;
 }
-
 .mb-intro .macbook-keyboard {
     position: absolute;
-    top: 40px;
+    top: 41px;
     left: 7px;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 2px;
-    width: 136px;
-    height: 50px;
-    padding: 2px;
+    width: 130px;
+    height: 45px;
+    padding-left: 2px;
     overflow: hidden;
     border-radius: 4px;
-    background: linear-gradient(145deg, #c5c5c5, #a2a2a2);
+    background: linear-gradient(30deg, rgba(0, 0, 0, 0.24), transparent), #cdcdcd;
     box-shadow: inset 0 0 3px #777;
 }
-
 .mb-intro .macbook-key {
-    flex: 0 0 6px;
+    float: left;
     width: 6px;
     height: 6px;
+    margin: 1px;
     border-radius: 2px;
     background: #444;
     box-shadow: 0 -2px 0 #222;
     transform: translateZ(-2px);
+    animation: keys 2s ease-in-out infinite;
 }
-
-.mb-intro .macbook-keyboard > .macbook-key:nth-child(59) {
-    flex-basis: 45px;
-    width: 45px;
-}
-
+.mb-intro .macbook-keyboard > .macbook-key:nth-child(59) { width: 45px; }
+.mb-intro .macbook-keyboard > .macbook-key:nth-child(n+60) { height: 3px; }
 .mb-intro .macbook-body > div:not(.macbook-body-face-one) {
     position: absolute;
     z-index: 1;
@@ -2501,39 +2476,32 @@ body.cursor-hover-drag .cursor-badge {
     border-radius: 50%;
     background: #333;
 }
-
 .mb-intro .macbook-body > div:nth-child(2) { top: 20px; left: 20px; }
 .mb-intro .macbook-body > div:nth-child(3) { top: 20px; right: 20px; }
 .mb-intro .macbook-body > div:nth-child(4) { right: 20px; bottom: 20px; }
 .mb-intro .macbook-body > div:nth-child(5) { bottom: 20px; left: 20px; }
-
 .mb-intro .macbook-shadow {
     position: absolute;
-    top: 150px;
-    left: 45px;
+    top: 160px;
+    left: 40px;
+    z-index: 1;
     width: 60px;
     height: 0;
-    box-shadow: 0 0 60px 40px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 0 60px 40px rgba(0, 0, 0, 0.3);
+    animation: macbook-shadow-animation 6s linear 1 both;
 }
-
-.mb-intro .mb-intro-footer {
+.mb-intro-footer {
     position: absolute;
     bottom: 10%;
     left: 50%;
-    transform: translateX(-50%);
     color: var(--accent-cyan);
     text-align: center;
     font-family: var(--font-mono);
+    transform: translateX(-50%);
 }
-
-.mb-intro .mb-loading-dots span {
-    animation: mbDotBlink 1.4s ease-in-out infinite;
-}
-
-.mb-intro .mb-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.mb-intro .mb-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-.mb-intro .mb-skip-btn {
+.mb-loading-text, .mb-loading-dots { color: var(--accent-cyan); }
+.mb-loading-text { font-size: 0.8rem; letter-spacing: 0.08em; }
+.mb-skip-btn {
     position: absolute;
     right: 5%;
     bottom: 5%;
@@ -2543,385 +2511,61 @@ body.cursor-hover-drag .cursor-badge {
     background: #1a1d2c;
     color: #aab2c5;
     cursor: pointer;
+    transition: background-color 200ms ease, color 200ms ease;
 }
+.mb-skip-btn:hover { background: var(--accent-violet); color: #fff; }
 
-.mb-intro .mb-skip-btn:hover {
-    background: var(--accent-violet);
-    color: #fff;
+@keyframes rotate {
+    0% { transform: rotateX(-20deg) rotateY(0deg) rotateZ(0deg); }
+    5% { transform: rotateX(-20deg) rotateY(-20deg) rotateZ(0deg); }
+    20% { transform: rotateX(30deg) rotateY(200deg) rotateZ(0deg); }
+    25% { transform: rotateX(-60deg) rotateY(150deg) rotateZ(0deg); }
+    60% { transform: rotateX(-20deg) rotateY(130deg) rotateZ(0deg); }
+    65% { transform: rotateX(-20deg) rotateY(120deg) rotateZ(0deg); }
+    80% { transform: rotateX(-20deg) rotateY(375deg) rotateZ(0deg); }
+    85% { transform: rotateX(-20deg) rotateY(357deg) rotateZ(0deg); }
+    87% { transform: rotateX(-20deg) rotateY(360deg) rotateZ(0deg); }
+    100% { transform: rotateX(-20deg) rotateY(360deg) rotateZ(0deg); }
 }
-
-.mb-intro .custom-animate-rotate {
-    animation: macbook-intro-rotate 5s cubic-bezier(0.4, 0, 0.2, 1) both;
+@keyframes lid-screen {
+    0% { transform: rotateX(0deg); background-position: left bottom; }
+    5% { transform: rotateX(50deg); background-position: left bottom; }
+    20% { transform: rotateX(-90deg); background-position: -150px top; }
+    25% { transform: rotateX(15deg); background-position: left bottom; }
+    30% { transform: rotateX(-5deg); background-position: right top; }
+    38% { transform: rotateX(5deg); background-position: right top; }
+    48% { transform: rotateX(0deg); background-position: right top; }
+    90% { transform: rotateX(0deg); background-position: right top; }
+    100% { transform: rotateX(0deg); background-position: right center; }
 }
-
-.mb-intro .custom-animate-lid-screen {
-    animation: macbook-intro-lid 5s cubic-bezier(0.4, 0, 0.2, 1) both;
+@keyframes lid-macbody { 0%, 50%, 100% { transform: rotateX(-90deg); } }
+@keyframes lid-keyboard-area {
+    0%, 100% { background-color: #dfdfdf; }
+    50% { background-color: #bbb; }
 }
-
-.mb-intro .custom-animate-lid-macbody {
-    animation: macbook-intro-body 5s ease-in-out both;
+@keyframes screen-shade {
+    0% { background-position: -20px 0; }
+    5% { background-position: -40px 0; }
+    20% { background-position: 200px 0; }
+    50% { background-position: -200px 0; }
+    80% { background-position: 0 0; }
+    85% { background-position: -30px 0; }
+    90% { background-position: -20px 0; }
+    100% { background-position: -20px 0; }
 }
-
-.mb-intro .custom-animate-lid-keyboard-area {
-    animation: macbook-intro-keyboard 5s ease-in-out both;
+@keyframes keys {
+    0% { box-shadow: 0 -2px 0 #222; }
+    5% { box-shadow: 1px -1px 0 #222; }
+    20%, 25%, 60% { box-shadow: -1px 1px 0 #222; }
+    80%, 85%, 87%, 100% { box-shadow: 0 -2px 0 #222; }
 }
-
-.mb-intro .custom-animate-screen-shade {
-    animation: macbook-intro-shade 5s ease-in-out both;
+@keyframes macbook-shadow-animation {
+    0%, 100% { transform: rotateX(80deg) rotateY(0deg) rotateZ(0deg); box-shadow: 0 0 60px 40px rgba(0,0,0,0.3); }
+    5% { transform: rotateX(80deg) rotateY(10deg) rotateZ(0deg); box-shadow: 0 0 60px 40px rgba(0,0,0,0.3); }
+    20% { transform: rotateX(30deg) rotateY(-20deg) rotateZ(-20deg); box-shadow: 0 0 50px 30px rgba(0,0,0,0.3); }
+    25% { transform: rotateX(80deg) rotateY(-20deg) rotateZ(50deg); box-shadow: 0 0 35px 15px rgba(0,0,0,0.1); }
+    60% { transform: rotateX(80deg) rotateY(0deg) rotateZ(-50deg) translateX(30px); box-shadow: 0 0 60px 40px rgba(0,0,0,0.3); }
 }
-
-.mb-intro .custom-animate-keys {
-    animation: macbook-intro-keys 5s ease-in-out both;
-}
-
-.mb-intro .custom-animate-macbook-shadow {
-    animation: macbook-intro-shadow 5s ease-in-out both;
-}
-
-@keyframes macbook-intro-rotate {
-    0% { transform: rotateX(-18deg) rotateY(150deg) scale(0.65); opacity: 0; }
-    12% { transform: rotateX(-18deg) rotateY(90deg) scale(0.9); opacity: 1; }
-    38%, 78% { transform: rotateX(-18deg) rotateY(0deg) scale(1); opacity: 1; }
-    100% { transform: rotateX(-18deg) rotateY(0deg) scale(0.42); opacity: 0; }
-}
-
-@keyframes macbook-intro-lid {
-    0%, 12% { transform: rotateX(0deg); }
-    38%, 78% { transform: rotateX(-90deg); }
-    100% { transform: rotateX(-90deg) scale(0.8); }
-}
-
-@keyframes macbook-intro-body {
-    0%, 30%, 78% { transform: rotateX(0deg); }
-    100% { transform: rotateX(0deg) scale(0.8); }
-}
-
-@keyframes macbook-intro-keyboard {
-    0%, 100% { background-color: #c5c5c5; }
-    50% { background-color: #d9d9d9; }
-}
-
-@keyframes macbook-intro-shade {
-    0% { background-position: -150px 0; }
-    50% { background-position: 150px 0; }
-    100% { background-position: 300px 0; }
-}
-
-@keyframes macbook-intro-keys {
-    0%, 100% { box-shadow: 0 -2px 0 #222; }
-    50% { box-shadow: 0 1px 0 #222; }
-}
-
-@keyframes macbook-intro-shadow {
-    0%, 100% { opacity: 0; transform: scale(0.5); }
-    38%, 78% { opacity: 1; transform: scale(1); }
-}
-
-.mb-scene {
-    perspective: 800px;
-    width: 280px;
-    height: 200px;
-    position: relative;
-}
-
-.mb-wrap {
-    transform-style: preserve-3d;
-    animation: mbRotate 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    position: absolute;
-    width: 280px;
-    height: 180px;
-    left: 0;
-    top: 10px;
-}
-
-@keyframes mbRotate {
-    0%   { transform: rotateX(0deg) rotateY(0deg) scale(1); opacity: 1; }
-    100% { transform: rotateX(0deg) rotateY(0deg) scale(0.8); opacity: 0; }
-}
-
-/* MacBook Lid / Screen - starts facing AWAY (closed), then opens toward user */
-.mb-lid {
-    position: absolute;
-    width: 280px;
-    height: 180px;
-    bottom: 0; left: 0;
-    transform-style: preserve-3d;
-    transform-origin: bottom center;
-    animation: mbLidScreen 5s ease-in-out forwards;
-}
-
-@keyframes mbLidScreen {
-    0%   { transform: rotateX(0deg); }           /* Closed - back facing user */
-    20%  { transform: rotateX(60deg); }           /* Opening */
-    40%  { transform: rotateX(-120deg); }         /* Open - screen facing user */
-    80%  { transform: rotateX(-120deg); }         /* Hold open facing user */
-    100% { transform: rotateX(-120deg) scale(0.7); opacity: 0; } /* Zoom out & fade */
-}
-
-/* Hide screen content when facing away (backside) */
-.mb-screen-ui,
-.mb-sc-logo,
-.mb-sc-subtitle,
-.mb-sc-dots,
-.mb-sc-bars {
-    backface-visibility: hidden;
-    animation: screenContent 5s ease-in-out forwards;
-}
-
-@keyframes screenContent {
-    0%   { opacity: 0; transform: rotateY(180deg); }   /* Hidden on backside */
-    40%  { opacity: 1; transform: rotateY(0deg); }     /* Visible when facing user */
-    80%  { opacity: 1; }
-    100% { opacity: 0; }                               /* Fade out on zoom */
-}
-
-/* Zoom out the whole macbook intro container */
-@keyframes mbIntroZoomOut {
-    0%   { transform: scale(1); opacity: 1; }
-    100% { transform: scale(0.5); opacity: 0; }
-}
-
-.mb-intro-zoom-out {
-    animation: mbIntroZoomOut 1s ease-in forwards;
-}
-
-.mb-lid-face {
-    position: absolute;
-    width: 100%; height: 100%;
-    border-radius: 12px;
-    background: linear-gradient(145deg, #c8c8c8 0%, #e0e0e0 50%, #b5b5b5 100%);
-    box-shadow: inset 0 3px 10px rgba(255,255,255,0.5), 0 4px 20px rgba(0,0,0,0.3);
-    transform: translateZ(3px);
-    transform-style: preserve-3d;
-}
-
-.mb-webcam {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: #222;
-    position: absolute;
-    top: 7px; left: 50%;
-    transform: translateX(-50%);
-}
-
-.mb-screen-area {
-    position: absolute;
-    top: 16px; left: 16px;
-    right: 16px; bottom: 16px;
-    background: #0a0e1a;
-    border-radius: 3px;
-    overflow: hidden;
-    box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
-}
-
-.mb-screen-glare {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(-135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 47%, rgba(255,255,255,0) 48%);
-    background-size: 500px 300px;
-    animation: mbGlare 5s ease infinite;
-    pointer-events: none;
-    z-index: 2;
-}
-
-@keyframes mbGlare {
-    0%   { background-position: -40px 0; }
-    20%  { background-position: 300px 0; }
-    50%  { background-position: -300px 0; }
-    80%  { background-position: 0 0; }
-    100% { background-position: -40px 0; }
-}
-
-/* Screen UI content */
-.mb-screen-ui {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 12px;
-    position: relative;
-    z-index: 1;
-}
-
-.mb-sc-dots {
-    position: absolute;
-    top: 6px; left: 8px;
-    display: flex; gap: 4px;
-}
-.mb-sc-dots span { width: 5px; height: 5px; border-radius: 50%; }
-.mb-sc-red    { background: #ff5f57; }
-.mb-sc-yellow { background: #ffbd2e; }
-.mb-sc-green  { background: #28c840; }
-
-.mb-sc-logo {
-    font-family: var(--font-heading);
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--accent-cyan);
-    margin-bottom: 4px;
-    text-shadow: 0 0 20px rgba(0, 208, 255, 0.5);
-}
-
-.mb-sc-subtitle {
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
-    color: var(--text-muted);
-    letter-spacing: 0.15em;
-    margin-bottom: 10px;
-}
-
-.mb-sc-bars { display: flex; flex-direction: column; gap: 4px; width: 70%; }
-
-.mb-sc-bar {
-    height: 3px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.mb-sc-bar-short { width: 60%; }
-
-.mb-sc-bar-inner {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet));
-    border-radius: 2px;
-    animation: mbBarFill 2s ease-in-out infinite alternate;
-}
-
-@keyframes mbBarFill {
-    0%   { width: 15%; }
-    100% { width: 95%; }
-}
-
-/* MacBook Body / Base */
-.mb-base {
-    position: absolute;
-    width: 280px;
-    height: 180px;
-    bottom: 0; left: 0;
-    transform-style: preserve-3d;
-    transform-origin: bottom center;
-    transform: rotateX(-90deg);
-}
-
-.mb-base-face {
-    position: absolute;
-    width: 100%; height: 100%;
-    border-radius: 12px;
-    background: linear-gradient(30deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%), #d5d5d5;
-    transform: translateZ(-3px);
-    transform-style: preserve-3d;
-    animation: mbKeyboardBg 5s ease infinite;
-}
-
-@keyframes mbKeyboardBg {
-    0%   { background-color: #d5d5d5; }
-    50%  { background-color: #bbb; }
-    100% { background-color: #d5d5d5; }
-}
-
-.mb-touchpad {
-    width: 70px;
-    height: 50px;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -70%);
-    border-radius: 6px;
-    background: linear-gradient(30deg, rgba(0,0,0,0.15) 0%, transparent 100%), #c5c5c5;
-    box-shadow: inset 0 0 4px #999;
-}
-
-.mb-keyboard-wrap {
-    position: absolute;
-    left: 14px; top: 80px;
-    width: 252px; height: 80px;
-    border-radius: 6px;
-    background: linear-gradient(30deg, rgba(0,0,0,0.15) 0%, transparent 100%), #c0c0c0;
-    box-shadow: inset 0 0 4px #888;
-    padding: 3px;
-    overflow: hidden;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5px;
-}
-
-.mb-key {
-    width: 10px; height: 10px;
-    background: #555;
-    border-radius: 2px;
-    box-shadow: 0 -2px 0 #333;
-    animation: mbKeys 5s ease infinite;
-}
-
-.mb-key-space { width: 80px; }
-.mb-key-small { height: 5px; }
-
-@keyframes mbKeys {
-    0%   { box-shadow: 0 -2px 0 #333; }
-    5%   { box-shadow: 1px -1px 0 #333; }
-    20%  { box-shadow: -1px 1px 0 #333; }
-    80%  { box-shadow: 0 -2px 0 #333; }
-    100% { box-shadow: 0 -2px 0 #333; }
-}
-
-.mb-ground-shadow {
-    position: absolute;
-    width: 100px;
-    height: 0;
-    left: 50%; bottom: -50px;
-    transform: translateX(-50%) rotateX(80deg);
-    box-shadow: 0 0 80px 50px rgba(0,0,0,0.25);
-    animation: mbShadow 5s ease infinite;
-}
-
-@keyframes mbShadow {
-    0%   { box-shadow: 0 0 80px 50px rgba(0,0,0,0.25); }
-    25%  { box-shadow: 0 0 50px 25px rgba(0,0,0,0.1); }
-    60%  { box-shadow: 0 0 80px 50px rgba(0,0,0,0.25); }
-    100% { box-shadow: 0 0 80px 50px rgba(0,0,0,0.25); }
-}
-
-.mb-intro-footer {
-    margin-top: 60px;
-    text-align: center;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-
-.mb-loading-dots span {
-    animation: mbDotBlink 1.4s ease-in-out infinite;
-}
-.mb-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.mb-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes mbDotBlink {
-    0%, 80%, 100% { opacity: 0; }
-    40% { opacity: 1; }
-}
-
-.mb-skip-btn {
-    position: absolute;
-    bottom: 30px; right: 30px;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 0.4rem 1rem;
-    border-radius: var(--radius-pill);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.mb-skip-btn:hover {
-    color: var(--accent-cyan);
-    border-color: var(--accent-cyan);
-    background: rgba(0, 208, 255, 0.08);
-}
-
 /* ==========================================================================
    HERO OVERLAP FIX & HERO ANIMATIONS
    ========================================================================== */
@@ -3144,159 +2788,228 @@ body.cursor-hover-drag .cursor-badge {
 }
 
 .cert-animated-wrapper {
-    display: flex;
-    justify-content: center;
-    margin: 2rem auto 0;
-}
-
-.cert-card-stack {
     width: 100%;
-}
-
-.cert-stack-stage {
-    position: relative;
-    width: min(100%, 600px);
-    height: 438px;
     margin: 0 auto;
 }
 
-.cert-stack-card {
+.cert-card-stack {
+    width: min(100%, 1240px);
+    margin: 0 auto;
+}
+
+.cert-fan-stage {
+    position: relative;
+    width: 100%;
+    height: clamp(460px, 58vw, 560px);
+    margin: 0 auto;
+    overflow: hidden;
+    perspective: 1400px;
+    transform-style: preserve-3d;
+    isolation: isolate;
+    outline: none;
+}
+
+.cert-fan-stage::before {
+    content: "";
     position: absolute;
+    top: 12%;
     left: 50%;
-    bottom: 12px;
-    width: min(100%, 520px);
-    height: 390px;
+    width: min(68%, 820px);
+    height: 64%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(0, 208, 255, 0.1), rgba(140, 84, 255, 0.05) 48%, transparent 72%);
+    filter: blur(24px);
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.cert-fan-card {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    display: block;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 22px;
+    background: #0b0d18;
+    color: #fff;
+    text-align: left;
+    transform-style: preserve-3d;
     transform-origin: center bottom;
-    transition: bottom 480ms cubic-bezier(0.16, 1, 0.3, 1),
-                transform 480ms cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 480ms ease;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.54);
+    transition: transform 680ms cubic-bezier(0.2, 0.75, 0.25, 1),
+                opacity 500ms ease,
+                border-color 300ms ease,
+                box-shadow 300ms ease;
+    will-change: transform;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
-.cert-stack-card[data-stack-position="0"] {
-    z-index: 3;
-    transform: translateX(-50%) scale(1);
+.cert-fan-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
 }
 
-.cert-stack-card[data-stack-position="1"] {
-    z-index: 2;
-    bottom: 26px;
-    transform: translateX(-50%) scale(0.96);
+.cert-fan-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(4, 6, 12, 0.02) 28%, rgba(4, 6, 12, 0.28) 52%, rgba(4, 6, 12, 0.96) 100%);
 }
 
-.cert-stack-card[data-stack-position="2"] {
-    z-index: 1;
-    bottom: 40px;
-    transform: translateX(-50%) scale(0.92);
+.cert-fan-content {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.38rem;
+    padding: 1.5rem 1.6rem 1.7rem;
 }
 
-.cert-stack-card .cert-img-box {
-    height: 170px;
+.cert-fan-organization {
+    overflow: hidden;
+    color: #7be7f8;
+    font: 600 0.7rem var(--font-mono);
+    letter-spacing: 0.14em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
-.cert-stack-card .cert-body {
-    padding: 1.1rem;
+.cert-fan-title {
+    display: -webkit-box;
+    overflow: hidden;
+    font: 600 clamp(1.15rem, 2vw, 1.55rem)/1.2 var(--font-heading);
+    letter-spacing: -0.025em;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
-.cert-stack-card .cert-name {
-    font-size: 1.05rem;
+.cert-fan-description {
+    display: -webkit-box;
+    overflow: hidden;
+    color: rgba(245, 247, 252, 0.78);
+    font-size: 0.84rem;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
-.cert-stack-card .cert-detail {
-    font-size: 0.82rem;
+.cert-fan-card[aria-pressed="true"] {
+    border-color: rgba(123, 231, 248, 0.78);
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.58), 0 0 34px rgba(0, 208, 255, 0.14);
 }
 
-.cert-stack-stage.is-advancing .cert-stack-card[data-stack-position="0"] {
-    z-index: 10;
-    opacity: 0;
-    transform: translate(-50%, 360px) scale(1);
+.cert-fan-card:focus-visible,
+.cert-fan-arrow:focus-visible,
+.cert-fan-dot:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 4px;
 }
 
-.cert-stack-stage.is-advancing .cert-stack-card[data-stack-position="1"] {
-    z-index: 3;
-    bottom: 12px;
-    transform: translateX(-50%) scale(1);
-}
-
-.cert-stack-stage.is-advancing .cert-stack-card[data-stack-position="2"] {
-    z-index: 2;
-    bottom: 26px;
-    transform: translateX(-50%) scale(0.96);
-}
-
-.cert-stack-card--entering {
-    animation: cert-stack-enter 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes cert-stack-enter {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -70px) scale(0.82);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(-50%) scale(0.92);
-    }
-}
-
-.cert-stack-controls {
+.cert-fan-controls {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    padding-top: 0.5rem;
+    gap: 1.2rem;
+    margin-top: 0.35rem;
 }
 
-.cert-stack-counter {
-    color: var(--text-secondary);
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-}
-
-.cert-stack-next {
-    min-height: 2.6rem;
-    padding: 0.55rem 1rem;
-    border: 1px solid var(--border-accent-cyan);
-    border-radius: var(--radius-sm);
-    background: rgba(0, 208, 255, 0.08);
+.cert-fan-arrow {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 1px solid var(--border-subtle);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.035);
     color: var(--text-primary);
-    font: 600 0.88rem var(--font-body);
+    font: 400 1.2rem var(--font-body);
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition: border-color 200ms ease, background 200ms ease, transform 200ms ease;
 }
 
-.cert-stack-next:hover:not(:disabled) {
-    background: rgba(0, 208, 255, 0.16);
+.cert-fan-arrow:hover {
     transform: translateY(-2px);
+    border-color: var(--border-accent-cyan);
+    background: rgba(0, 208, 255, 0.1);
 }
 
-.cert-stack-next:disabled {
-    cursor: wait;
-    opacity: 0.7;
+.cert-fan-counter {
+    min-width: 3.5rem;
+    color: var(--text-secondary);
+    font: 600 0.72rem var(--font-mono);
+    letter-spacing: 0.12em;
+    text-align: center;
+}
+
+.cert-fan-dots {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.cert-fan-dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.28);
+    cursor: pointer;
+    transition: width 250ms ease, background 250ms ease;
+}
+
+.cert-fan-dot.active {
+    width: 24px;
+    background: var(--accent-cyan);
 }
 
 @media (max-width: 600px) {
-    .cert-stack-stage {
-        height: 420px;
+    .mb-intro .macbook-container {
+        transform: translate(-50%, -50%) scale(1.4);
     }
 
-    .cert-stack-card {
-        width: 100%;
-        height: 380px;
+    .cert-fan-stage {
+        height: 390px;
     }
 
-    .cert-stack-card .cert-img-box {
-        height: 150px;
+    .cert-fan-card {
+        bottom: 24px;
+    }
+
+    .cert-fan-content {
+        gap: 0.3rem;
+        padding: 1rem 1.1rem 1.2rem;
+    }
+
+    .cert-fan-description {
+        font-size: 0.76rem;
+    }
+
+    .cert-fan-controls {
+        gap: 0.7rem;
+    }
+
+    .cert-fan-arrow {
+        width: 38px;
+        height: 38px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .cert-stack-card,
-    .cert-stack-next {
+    .cert-fan-card,
+    .cert-fan-arrow,
+    .cert-fan-dot {
         transition-duration: 0.01ms;
-    }
-
-    .cert-stack-card--entering {
-        animation-duration: 0.01ms;
     }
 }
 
@@ -3328,18 +3041,20 @@ body.cursor-hover-drag .cursor-badge {
     .hero-actions-row .btn { width: 100%; justify-content: center; }
 
     /* Works Wheel */
-    .works-wheel-stage-container { height: 400px; }
+    .works-wheel-stage-container { height: 520px; }
     .wheel-active-title {
         position: static;
         transform: none;
-        max-width: 100%;
-        padding: 1.5rem;
+        width: calc(100% - 2rem);
+        max-width: 880px;
+        margin: -0.5rem auto 0;
+        padding: 1.4rem 1.2rem;
         text-align: center;
     }
     .wheel-tech-tags { justify-content: center; }
     .wheel-cta-group { justify-content: center; flex-wrap: wrap; }
-    .wheel-index-list { display: none; }
     .wheel-title-text { font-size: 1.4rem; }
+    .works-wheel-stage-container .wheel-stage-controls { bottom: 1rem; }
 
     /* Projects */
     .projects-grid { grid-template-columns: 1fr; }
@@ -3397,7 +3112,7 @@ body.cursor-hover-drag .cursor-badge {
     .hud-sub, .hud-telemetry { display: none; }
 
     /* MacBook intro */
-    .mb-scene { transform: scale(0.8); }
+
     .mb-skip-btn { bottom: 20px; right: 20px; }
 
     /* Arch modal */
@@ -3429,11 +3144,12 @@ body.cursor-hover-drag .cursor-badge {
     .brand-symbol { font-size: 1.15rem; }
 
     /* Works Wheel */
-    .works-wheel-stage-container { height: 320px; }
+    .works-wheel-stage-container { height: 450px; }
     .wheel-stage-controls { gap: 0.6rem; }
     .wheel-control-btn { width: 36px; height: 36px; }
     .wheel-progress-track { width: 100px; }
     .wheel-title-text { font-size: 1.2rem; }
+    .wheel-title-desc { font-size: 0.88rem; }
 
     /* Cards */
     .projects-grid { grid-template-columns: 1fr; }
@@ -3482,8 +3198,8 @@ body.cursor-hover-drag .cursor-badge {
     .hud-section { gap: 0.25rem; }
 
     /* MacBook intro */
-    .mb-scene { transform: scale(0.6); }
-    .mb-intro-footer { margin-top: 30px; font-size: 0.7rem; }
+    .mb-intro .macbook-container { transform: translate(-50%, -50%) scale(1.15); }
+    .mb-loading-text { font-size: 0.7rem; }
     .mb-skip-btn { bottom: 15px; right: 15px; font-size: 0.72rem; }
 
     /* Modals */
@@ -3500,7 +3216,7 @@ body.cursor-hover-drag .cursor-badge {
     .btn-lg { padding: 0.7rem 1.2rem; font-size: 0.9rem; }
     .section-title { font-size: 1.5rem; }
     .section-wrapper { padding: 3rem 0; }
-    .mb-scene { transform: scale(0.5); }
+    .mb-intro .macbook-container { transform: translate(-50%, -50%) scale(0.95); }
 }
 
 /* Reduced motion accessibility */

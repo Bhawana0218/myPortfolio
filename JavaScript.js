@@ -446,7 +446,6 @@
         const activeTags = document.getElementById('wheelTechTags');
         const inspectBtn = document.getElementById('wheelInspectBtn');
         const liveLink = document.getElementById('wheelLiveLink');
-        const indexList = document.getElementById('wheelIndexList');
         const prevBtn = document.getElementById('wheelPrevBtn');
         const nextBtn = document.getElementById('wheelNextBtn');
         const progressBar = document.getElementById('wheelProgressBar');
@@ -458,9 +457,9 @@
         const last = Math.max(count - 1, 0);
 
         // Mathematical Constants from works-wheel.tsx
-        const CARD_H = 0.38;
-        const CARD_MAX_W = 0.34;
-        const CARD_RATIO = 1.45;
+        const CARD_H = 0.52;
+        const CARD_MAX_W = 0.42;
+        const CARD_RATIO = 1.4;
         const STEP = 40;
         const DRUM = 2.22;
         const LENS = 2.7;
@@ -503,26 +502,6 @@
 
         cardElements = Array.from(drum.querySelectorAll('.wheel-card'));
 
-        // Render index items
-        if (indexList) {
-            indexList.innerHTML = items.map((item, i) => `
-                <li>
-                    <button type="button" class="wheel-index-item ${i === 0 ? 'active' : ''}" data-target-index="${i}">
-                        ${item.title}
-                    </button>
-                </li>
-            `).join('');
-
-            indexList.querySelectorAll('.wheel-index-item').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const idx = parseInt(btn.getAttribute('data-target-index'), 10);
-                    target = idx + 1;
-                    lastInteractionTime = Date.now();
-                    playSound('drum');
-                });
-            });
-        }
-
         function updateActiveDetails(idx) {
             const p = items[idx];
             if (!p) return;
@@ -547,13 +526,6 @@
                 }
             }
 
-            if (indexList) {
-                indexList.querySelectorAll('.wheel-index-item').forEach((btn, i) => {
-                    if (i === idx) btn.classList.add('active');
-                    else btn.classList.remove('active');
-                });
-            }
-
             if (progressBar) {
                 progressBar.style.width = `${((idx + 1) / count) * 100}%`;
             }
@@ -562,7 +534,8 @@
         function calculateMetrics() {
             const w = stage.clientWidth || window.innerWidth;
             const h = stage.clientHeight || 600;
-            const cardW = Math.min(h * CARD_H * CARD_RATIO, w * CARD_MAX_W);
+            const widthLimit = w <= 600 ? 0.78 : w <= 1024 ? 0.56 : CARD_MAX_W;
+            const cardW = Math.min(h * CARD_H * CARD_RATIO, w * widthLimit);
             const cardH = cardW / CARD_RATIO;
             const drumR = cardH * DRUM;
             const ringR = cardH * RING_R;
